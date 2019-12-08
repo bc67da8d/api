@@ -1,0 +1,28 @@
+{
+  "require": {
+    "aws/aws-sdk-php": "3.109.3",
+    "brick/money": "^0.4.2",
+    "firebase/php-jwt": "v5.0.0",
+    "league/fractal": "0.18.0",
+    "phlak/semver": "^2.0",
+    "symfony/css-selector": "^4.3",
+    "symfony/dom-crawler": "^4.3"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.4.2",
+    "phpunit/phpunit" : "8.2.5",
+    "phalcon/dd": "^1",
+    "phalcon/ide-stubs": "^3.3"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
+  },
+  "scripts": {
+    "phpcs": "phpcs --standard=PSR2"
+  },
+  "autoload-dev": {
+
+  }
+}

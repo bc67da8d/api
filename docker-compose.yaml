@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+    db:
+     image: mysql:8.0.17
+     volumes:
+       - db_data:/var/lib/mysql
+     command: --default-authentication-plugin=mysql_native_password
+     environment:
+       MYSQL_ROOT_PASSWORD: lackky
+       MYSQL_DATABASE: lackky
+       MYSQL_USER: lackky
+       MYSQL_PASSWORD: lackky
+    php:
+     depends_on:
+       - db
+       - redis
+     image: gsviec/php:7.3-alpine
+     ports:
+       - "80:80"
+     volumes:
+      - ./:/app
+     env_file:
+       - .env
+    phpmyadmin:
+      restart: 'no'
+      image: phpmyadmin/phpmyadmin:4.6
+      depends_on:
+        - db
+      ports:
+        - "9090:80"
+      environment:
+        PMA_ARBITRARY: 1
+        PMA_HOST: db
+        PMA_PORT: 3306
+        PMA_USER: root
+        PMA_PASSWORD: lackky
+    redis:
+      image: redis:alpine
+volumes:
+    db_data:

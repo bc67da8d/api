@@ -1,0 +1,7 @@
+.idea/
+vendor/
+.phalcon
+.wercker
+.env
+databases/config_prod.conf
+config.prod.php
