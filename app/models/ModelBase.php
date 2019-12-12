@@ -150,14 +150,4 @@ abstract class ModelBase extends Model
         $filterService = $this->getDI()->get('filter');
         return $filterService->sanitize($value, $filter);
     }
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource() :string
-    {
-        $path = explode('\\', get_class($this));
-        return 'Wo_'. array_pop($path);
-    }
 }

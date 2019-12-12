@@ -5,3 +5,4 @@ vendor/
 .env
 databases/config_prod.conf
 config.prod.php
+config.dev-tool.php
