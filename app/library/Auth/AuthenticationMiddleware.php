@@ -33,7 +33,7 @@ class AuthenticationMiddleware implements MiddlewareInterface
         $authHeader= $app->request->getHeader('Authorization');
         if ($authHeader) {
             $jwt = explode(" ", $authHeader);
-            $key = base64_decode($app['config']->application->jwtSecret);
+            $key = $app['config']->application->jwtSecret;
             if (isset($jwt[1])) {
                 try {
                     $decoded = JWT::decode($jwt[1], $key, ['HS256']);

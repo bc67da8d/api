@@ -10,7 +10,7 @@ use Exception;
 /**
  * Lackky\Auth\Auth
  *
- * Manages Authentication/Identity Management in FRM.FM
+ * Manages Authentication/Identity Management in Lackky
  *
  * @property \Phalcon\Config $config
  * @package Lackky\Auth
@@ -56,7 +56,7 @@ class Auth extends Component
 
         try {
             // Check if the user exist
-            $user = $this->userService->getFirstByEmailOrUsername($credentials['email']);
+            $user = $this->userService->getFirstByEmail($credentials['email']);
             $userData = [
                 'usersId'   => $user->getId(),
                 'userAgent' => $userAgent,
@@ -73,7 +73,7 @@ class Auth extends Component
             if (!$this->userService->isActiveMember($user)) {
                 throw new Exception('The user is inactive');
             }
-            $this->getEventsManager()->fire('user:successLogin', $this, $userData);
+            //$this->getEventsManager()->fire('user:successLogin', $this, $userData);
         } catch (EntityNotFoundException $e) {
             $this->getEventsManager()->fire('user:failedLogin', $this, ['ipAddress' => $clientIp]);
             throw new Exception('Wrong email/password combination');

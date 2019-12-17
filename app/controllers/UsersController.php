@@ -1,6 +1,7 @@
 <?php
 namespace Lackky\Controllers;
 
+use Lackky\Auth\Auth;
 use Lackky\Models\Services\UserService;
 use Firebase\JWT\JWT;
 use Lackky\Models\Users;
@@ -36,7 +37,15 @@ class UsersController extends ControllerBase
     }
     public function updateAction()
     {
-        //$user = $this->userService->findFirstByEmail($data['email'])
-        //
+        $data = $this->parserDataRequest();
+        $auth = container('auth');
+        if (!$id = $auth->getUserId()) {
+            return $this->respondWithError(t('You need login before update'));
+        }
+        $data['id'] = $id;
+        if (!$user = $this->userService->update($data)) {
+            return $this->respondWithError('Something wrong update a user');
+        }
+        return $this->respondWithSuccess($user->toArray());
     }
 }

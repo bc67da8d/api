@@ -4,6 +4,7 @@
 namespace Lackky\Models\Services;
 
 
+use Lackky\Constants\UserConstant;
 use Lackky\Models\Services\Exceptions\EntityNotFoundException;
 use Lackky\Models\Users;
 
@@ -21,6 +22,18 @@ class UserService extends Service
         }
         return $user;
     }
+    public function update($data)
+    {
+        unset($data['password']);
+        unset($data['email']);
+        $user = $this->findFirstById($data['id']);
+        $user->assign($data);
+        $user->setUpdatedAt(time());
+        if (!$user->save()) {
+            return false;
+        }
+        return $user;
+    }
 
     /**
      * @param $email
@@ -34,5 +47,33 @@ class UserService extends Service
             ->limit(1)
             ->execute();
         return $user->getFirst() ?: null;
+    }
+
+    /**
+     * @param int $id that is user id
+     *
+     * @return bool|\Phalcon\Mvc\ModelInterface|Users
+     */
+    public function findFirstById($id)
+    {
+        $user = Users::query()
+            ->where('id =:id:',['id' => $id])
+            ->limit(1)
+            ->execute();
+        return $user->getFirst() ?: null;
+    }
+    public function getFirstByEmail($email)
+    {
+        return $this->findFirstByEmail($email);
+    }
+
+    /**
+     * @param Users $user
+     *
+     * @return bool
+     */
+    public function isActiveMember(Users $user)
+    {
+        return $user->getStatus() == UserConstant::STATUS_ACTIVE;
     }
 }

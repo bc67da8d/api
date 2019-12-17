@@ -27,36 +27,43 @@ class AuthController extends ControllerBase
      */
     public function loginAction()
     {
-        $parameter = $this->parserDataRequest();
-        if (!isset($parameter['emailOrUsername'])) {
-            return $this->respondWithError('You need provider email and password');
+        $data = $this->parserDataRequest();
+        if (!isset($data['email']) || !isset($data['password'])) {
+            return $this->respondWithError(t('You need provide email or password'));
+        }
+        $user = $this->userService->findFirstByEmail($data['email']);
+        if (!$user) {
+            return $this->respondWithError('The email have not exits!');
+        }
+        if (!$this->security->checkHash($data['password'], $user->getPassword())) {
+            return $this->respondWithError('The password input wrong!');
+        }
+        $auth = container('auth');
+        try {
+            if (!$auth->check($data)) {
+                $key  = $this->config->application->jwtSecret;
+                $time = time();
+                $expiresIn = $time + env('EXPIRES_TOKEN');
+                $token = [
+                    'iss' =>  $this->request->getURI(),
+                    'iat' =>  $time,
+                    'exp' =>  $expiresIn,
+                    'data' =>[
+                        'id' => $user->getId(),
+                        'email' => $user->getEmail(),
+                    ]
+                ];
+                $jwt = JWT::encode($token, $key);
+                return $this->respondWithArray([
+                    'message' => 'Successful Login',
+                    'token' => $jwt,
+                    'expiresIn' => $expiresIn
+                ]);
+            }
+        } catch (\Exception $e) {
+
+            return $this->errorForbidden($e->getMessage());
         }
 
-        $user = $this->userService->findFirstByEmailOrUsername($parameter['emailOrUsername']);
-        if (!$user) {
-            return $this->respondWithError('This username or email do not exist');
-        }
-        if (!$this->security->checkHash($parameter['password'], $user->getPassword())) {
-            return $this->respondWithError('Wrong password combination');
-        }
-        $key = base64_decode($this->config->application->jwtSecret);
-        $time = time();
-        $expiresIn = $time + env('EXPIRES_TOKEN');
-        $token = [
-            'iss' =>  $this->request->getURI(),
-            'iat' =>  $time,
-            'exp' =>  $expiresIn,
-            'data' =>[
-                'id' => $user->getId(),
-                'email' => $user->getEmail(),
-                'username' => $user->getUsername(),
-            ]
-        ];
-        $jwt = JWT::encode($token, $key);
-        return $this->respondWithArray([
-            'message' => 'Successful Login',
-            'token' => $jwt,
-            'expiresIn' => $expiresIn
-        ]);
     }
 }

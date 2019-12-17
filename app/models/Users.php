@@ -68,6 +68,46 @@ class Users extends ModelBase
      * @var integer
      */
     protected $createdAt;
+    /**
+     * @var integer
+     */
+    protected $status;
+    /**
+     * @var integer
+     */
+    protected $updatedAt;
+
+    /**
+     * @param int $status
+     */
+    public function setStatus(int $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $updatedAt
+     */
+    public function setUpdatedAt(int $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUpdatedAt(): int
+    {
+        return $this->updatedAt;
+    }
 
     /**
      * Method to set the value of field id
@@ -333,7 +373,9 @@ class Users extends ModelBase
             'bio' => 'bio',
             'birthday' => 'birthday',
             'sex' => 'sex',
-            'createdAt' => 'createdAt'
+            'status' => 'status',
+            'createdAt' => 'createdAt',
+            'updatedAt' => 'updatedAt'
         ];
     }
 
