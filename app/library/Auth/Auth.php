@@ -51,21 +51,9 @@ class Auth extends Component
      */
     public function check(array $credentials)
     {
-        $clientIp  = $this->request->getClientAddress(true);
-        $userAgent = $this->request->getUserAgent();
-
         try {
-            // Check if the user exist
             $user = $this->userService->getFirstByEmail($credentials['email']);
-            $userData = [
-                'usersId'   => $user->getId(),
-                'userAgent' => $userAgent,
-                'ipAddress' => $clientIp,
-            ];
-
-            // Check the password
             if (!$this->security->checkHash($credentials['password'], $user->getPassword())) {
-                $this->getEventsManager()->fire('user:failedLogin', $this, $userData);
                 throw new Exception('Wrong email/password combination');
             }
 
@@ -73,9 +61,7 @@ class Auth extends Component
             if (!$this->userService->isActiveMember($user)) {
                 throw new Exception('The user is inactive');
             }
-            //$this->getEventsManager()->fire('user:successLogin', $this, $userData);
         } catch (EntityNotFoundException $e) {
-            $this->getEventsManager()->fire('user:failedLogin', $this, ['ipAddress' => $clientIp]);
             throw new Exception('Wrong email/password combination');
         }
     }
