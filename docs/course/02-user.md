@@ -1,8 +1,10 @@
 Chào mừng bạn đến bài học đầu tiên trong khoá học xây dựng REST API trên nền tảng PhalconPHP của Gsviec.
 
-Để xây dựng một ứng dụng mạng xã hội thú cưng, thì việc đầu tiên đó là tạo users. Trước tiên bạn hãy mở PHPMyadmin lên để tạo cơ sỏ dữ liệu cho nó.
+Để xây dựng một ứng dụng mạng xã hội thú cưng, thì việc đầu tiên đó là tạo users. Trước tiên bạn hãy mở PHPMyadmin lên để tạo cơ sở dữ liệu cho nó.
 
 Một khi chúng ta có table users rồi, thì việc kế đến là chúng ta sẽ định nghĩa nó trong code, mà cụ thể nó là phần model trong Phalcon PHP nếu bạn nào chưa hiểu model là gì thì có thể xem lại khoá học căn bản PhalconPHP trên gsviec.
+
+- Column mapping   https://docs.phalcon.io/3.4/en/db-models#independent-column-mapping
 
 Chúng ta sẽ định nghĩa một router api cho users như sau, bạn mở file app.php lên:
 

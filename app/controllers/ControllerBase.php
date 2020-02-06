@@ -1,55 +1,38 @@
 <?php
+/**
+ * This file is part of the Lackky API.
+ *
+ * (c) Lackky Team <hello@lackky.com>
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
 namespace Lackky\Controllers;
 
 use Lackky\Models\ModelBase;
-use League\Fractal\Pagination\Cursor;
+use Lackky\Models\Services\DownloadableContentService;
+use Lackky\Transformers\BaseTransformer;
 use League\Fractal\Pagination\PhalconFrameworkPaginatorAdapter;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
-use League\Fractal\Manager as FractalManager;
 use Phalcon\Http\Response;
+use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 use Phalcon\Paginator\Adapter\NativeArray as PaginatorNativeArray;
 use Phalcon\Paginator\Adapter\QueryBuilder as PaginatorQueryBuilder;
+use Phalcon\Paginator\AdapterInterface;
+use League\Fractal\Manager as FractalManager;
+use Phalcon\ValidationInterface;
 
 /**
  * Class ControllerBase
- *
+ * @property FractalManager $fractal
  * @package Lackky\Controllers
  */
 class ControllerBase extends Controller
 {
     /**
-     * @constant string name of api with the 400 client error
-     * @link     http://www.restapitutorial.com/httpstatuscodes.html
-     */
-    const CODE_WRONG_ARGS = 'GEN-FUBARGS';
-
-    /**
-     * @constant string name of api with the 404 client error
-     */
-    const CODE_NOT_FOUND = 'GEN-LIKETHEWIND';
-
-    /**
-     * @constant string name of api with the 500 server error
-     */
-    const CODE_INTERNAL_ERROR = 'GEN-AAAGGH';
-
-    /**
-     * @constant string name of api with the 401 client error
-     */
-    const CODE_UNAUTHORIZED = 'GEN-MAYBGTFO';
-
-    /**
-     * @constant string name of api with the 403 client error
-     */
-    const CODE_FORBIDDEN = 'GEN-GTFO';
-
-    const CODE_WRONG_DATA = 'GEN-DATA';
-
-    /**
-     *
      * @var integer
      */
     protected $statusCode = 200;
@@ -81,55 +64,42 @@ class ControllerBase extends Controller
         return $this;
     }
 
+    /**
+     * @param $item
+     * @param $callback
+     *
+     * @return ResponseInterface
+     */
     protected function respondWithItem($item, $callback)
     {
         $resource  = new Item($item, $callback);
-        $fractal   = new FractalManager();
         if (isset($_GET['include'])) {
-            $fractal->parseIncludes($_GET['include']);
+            $this->fractal->parseIncludes($_GET['include']);
         }
-        $rootScope = $fractal->createData($resource);
-        return $this->respondWithArray($rootScope->toArray());
-    }
-    protected function respondWithCollection($collection, $callback)
-    {
-        $resource = new Collection($collection, $callback);
-        $fractal = new FractalManager();
-        $rootScope = $fractal->createData($resource);
-        return $this->respondWithArray($rootScope->toArray());
-    }
-
-    protected function respondWithPagination($paginator, $callback)
-    {
-        $pagination = $paginator->getPaginate();
-        $resource = new Collection($pagination->items, $callback);
-        $resource->setPaginator(new PhalconFrameworkPaginatorAdapter($pagination));
-
-        $fractal = new FractalManager();
-        $rootScope = $fractal->createData($resource);
-        return $this->respondWithArray($rootScope->toArray());
-    }
-
-
-    protected function respondWithCursor($paginator, $callback)
-    {
-        $pagination = $paginator->getPaginate();
-        $resource = new Collection($pagination->items, $callback);
-        $cursor = new Cursor(
-            $pagination->current,
-            $pagination->before,
-            $pagination->next,
-            $pagination->total_items
-        );
-        $resource->setCursor($cursor);
         $rootScope = $this->fractal->createData($resource);
-
         return $this->respondWithArray($rootScope->toArray());
     }
 
     /**
+     * @param AdapterInterface $paginator
+     * @param BaseTransformer|callable $callback
+     *
+     * @return ResponseInterface
+     */
+    protected function respondWithPagination(
+        AdapterInterface $paginator,
+        $callback
+    ) {
+        $pagination = $paginator->getPaginate();
+        $resource = new Collection($pagination->items, $callback);
+        $resource->setPaginator(new PhalconFrameworkPaginatorAdapter($pagination));
+
+        $rootScope = $this->fractal->createData($resource);
+        return $this->respondWithArray($rootScope->toArray());
+    }
+    /**
      * @param array|object $data
-     * @return \Phalcon\Http\ResponseInterface
+     * @return ResponseInterface
      */
     public function respondWithArray($data)
     {
@@ -145,11 +115,10 @@ class ControllerBase extends Controller
      * @param $message
      * @param string $errorCode
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return ResponseInterface
      */
     public function respondWithError($message, $errorCode = '400')
     {
-        //$this->logger->error($message);
         return $this->respondWithArray([
             'error' => [
                 'code' => $errorCode,
@@ -161,76 +130,23 @@ class ControllerBase extends Controller
 
     public function respondWithSuccess($message = 'ok')
     {
-        return $this->respondWithArray(
-            [
-                'success' => [
-                    'message' => $message,
-                    'code' => 202
-                ]
+        return $this->respondWithArray([
+            'success' => [
+                'message' => $message,
+                'code' => $this->statusCode,
+                'httpCode' => $this->statusCode,
             ]
-        );
+        ]);
     }
 
     /**
      * @param string $message
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return ResponseInterface
      */
     public function errorForbidden($message = 'Forbidden')
     {
-        return $this->setStatusCode(403)
-            ->respondWithError($message, self::CODE_FORBIDDEN);
-    }
-
-    /**
-     * @param string $message
-     *
-     * @return \Phalcon\Http\ResponseInterface
-     */
-    public function errorInternalError($message = 'Internal Error')
-    {
-        return $this->setStatusCode(500)->respondWithError($message, self::CODE_INTERNAL_ERROR);
-    }
-
-    /**
-     * @param string $message
-     *
-     * @return \Phalcon\Http\ResponseInterface
-     */
-    public function errorNotFound($message = 'Resource Not Found')
-    {
-        return $this->setStatusCode(404)->respondWithError($message, self::CODE_NOT_FOUND);
-    }
-
-    /**
-     * @param string $message
-     *
-     * @return \Phalcon\Http\ResponseInterface
-     */
-    public function errorUnauthorized($message = 'Unauthorized')
-    {
-
-        return $this->setStatusCode(401)->respondWithError($message, self::CODE_UNAUTHORIZED);
-    }
-
-    /**
-     * @param string $message
-     *
-     * @return \Phalcon\Http\ResponseInterface
-     */
-    public function errorWrongArgs($message = 'Wrong Arguments')
-    {
-        return $this->setStatusCode(400)->respondWithError($message, self::CODE_WRONG_ARGS);
-    }
-
-    /**
-     * @param string $message
-     *
-     * @return \Phalcon\Http\ResponseInterface
-     */
-    public function errorWrongData($message = 'Wrong Data')
-    {
-        return $this->setStatusCode(409)->respondWithError($message, self::CODE_WRONG_DATA);
+        return $this->setStatusCode(403)->respondWithError($message);
     }
 
     /**
@@ -268,20 +184,6 @@ class ControllerBase extends Controller
     }
 
     /**
-     * @param $query
-     *
-     * @return mixed
-     */
-    public function getOne($query)
-    {
-        $builder = ModelBase::modelQuery($query);
-        return $builder
-            ->getQuery()
-            ->setUniqueRow(true)
-            ->execute();
-    }
-
-    /**
      * @return array
      */
     public function getParameter()
@@ -295,6 +197,8 @@ class ControllerBase extends Controller
             $fields = explode(',', $query['fields']);
             $query['fields'] = $fields;
         }
+        $query['limit'] = $query['limit'] ?? $this->perPage;
+        $query['page'] = $query['page'] ?? 1;
         unset($query['_url']);
         return $query;
     }
@@ -326,11 +230,33 @@ class ControllerBase extends Controller
      */
     public function validation($class, $input)
     {
+        /** @var ValidationInterface  $validation */
         $validation = new $class;
         $messages = $validation->validate($input);
         foreach ($messages as $m) {
             return $m->getMessage();
         }
         return false;
+    }
+    /**
+     * @param $id
+     *
+     * @return array
+     */
+    protected function getMetadataFile($id)
+    {
+        /** @var DownloadableContentService $downloadContent */
+        $downloadContent = container(DownloadableContentService::class);
+        return $downloadContent->getMetadata($id);
+    }
+    public function modelFilters(ModelBase $model)
+    {
+        $fields     = array_keys($model->getModelFilters());
+        $data       = [];
+        foreach ($fields as $field) {
+            $getter = 'get' . ucfirst($field);
+            $data[$field] = $model->$getter();
+        }
+        return $data;
     }
 }

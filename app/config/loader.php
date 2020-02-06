@@ -1,11 +1,14 @@
 <?php
-
 /**
- * Registering an autoloader
- * @var $config
+ * This file is part of the Lackky API.
+ *
+ * (c) Lackky Team <hello@lackky.com>
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
-
 use Phalcon\Loader;
+use Dotenv\Dotenv;
 
 $loader = new Loader();
 
@@ -21,3 +24,6 @@ $loader->registerFiles([
 $loader->register();
 
 require_once BASE_PATH . '/vendor/autoload.php';
+
+$dotenv = Dotenv::create(realpath(BASE_PATH));
+$dotenv->load();
