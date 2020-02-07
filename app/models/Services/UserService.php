@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
  */
-namespace App\Models\Services;
+namespace Lackky\Models\Services;
 
-use App\Models\Services\Exceptions\EntityNotFoundException;
-use App\Models\Users;
-use App\Constants\RoleConstant;
+use Lackky\Models\Services\Exceptions\EntityNotFoundException;
+use Lackky\Models\Users;
+use Lackky\Constants\RoleConstant;
 
 /**
  * Class UserService
@@ -73,102 +73,17 @@ class UserService extends Service
         return $user->getFirst() ?: null;
     }
 
-    /**
-     * Finds UserService by ArtistNameUrl.
-     *
-     * @param  string $name The ArtistNameUrl address.
-     * @return Users|\Phalcon\Mvc\ModelInterface|null
-     */
-    public function findFirstByArtistNameUrl($name)
-    {
-        $user = Users::query()
-            ->where('artistNameUrl = :name:', ['name' => $name])
-            ->limit(1)
-            ->execute();
 
-        return $user->getFirst() ?: null;
-    }
     /**
-     * Get UserService by email address.
+     * @param $email
      *
-     * @param  string $email The email address.
-     * @return Users
-     *
-     * @throws Exceptions\EntityNotFoundException
+     * @return Users|\Phalcon\Mvc\ModelInterface|null
+     * @throws EntityNotFoundException
      */
     public function getFirstByEmail($email)
     {
         if (!$user = $this->findFirstByEmail($email)) {
             throw new EntityNotFoundException($email, 'email');
-        }
-
-        return $user;
-    }
-
-    /**
-     * Finds UserService by username.
-     *
-     * @param  string $name The username.
-     *
-     * @return Users|\Phalcon\Mvc\ModelInterface|null
-     */
-    public function findFirstByUsername($name)
-    {
-        $user = Users::query()
-            ->where('username = :name:', ['name' => $name])
-            ->limit(1)
-            ->execute();
-
-        return $user->getFirst() ?: null;
-    }
-
-    /**
-     * Get UserService by username.
-     *
-     * @param  string $name The username.
-     * @return Users
-     *
-     * @throws Exceptions\EntityNotFoundException
-     */
-    public function getFirstByUsername($name)
-    {
-        if (!$user = $this->findFirstByUsername($name)) {
-            throw new Exceptions\EntityNotFoundException($name, 'username');
-        }
-
-        return $user;
-    }
-
-    /**
-     * Finds UserService by email or username.
-     *
-     * @param  string $name The username.
-     *
-     * @return Users|\Phalcon\Mvc\ModelInterface|null
-     */
-    public function findFirstByEmailOrUsername($name)
-    {
-        $user = Users::query()
-            ->where('email = :email:', ['email' => $name])
-            ->orWhere('username = :name:', ['name' => $name])
-            ->limit(1)
-            ->execute();
-
-        return $user->getFirst() ?: null;
-    }
-
-    /**
-     * Get UserService by email or username.
-     *
-     * @param  string $name The username.
-     * @return Users
-     *
-     * @throws EntityNotFoundException
-     */
-    public function getFirstByEmailOrUsername($name)
-    {
-        if (!$user = $this->findFirstByEmailOrUsername($name)) {
-            throw new EntityNotFoundException($name, 'email or username');
         }
 
         return $user;
@@ -363,10 +278,6 @@ class UserService extends Service
         $entity = new Users(['id' => 0]);
         return $entity;
     }
-    public function getName()
-    {
-        return $this->getCurrentViewer()->getFirstname() . ' ' .$this->getCurrentViewer()->getLastname();
-    }
 
     /**
      * @param $data
@@ -380,9 +291,9 @@ class UserService extends Service
             $data['gender'] = 'male';
         }
         $user = new Users();
-        $user->setRoleId(RoleConstant::BUYER_ROLE_ID);
-        $user->setCreationDate(time());
-        $user->setActive(1);
+        $user->setRoleId(RoleConstant::USER_ROLE_ID);
+        $user->setStatus('active');
+        $user->setCreatedAt(time());
         $user->assign($data);
         if (!$user->save()) {
             container('logger')->error('Add user fall '. $user->getMessages()[0]->getMessage());

@@ -54,12 +54,8 @@ class AuthController extends ControllerBase
                 'data' =>[
                     'id' => $user->getId(),
                     'email' => $user->getEmail(),
-                    'username' => $user->getUsername(),
                 ]
             ];
-            //Add auth token(legacy from old version)
-            $user->addAuthToken();
-
             $jwt = JWT::encode($token, $key);
             return $this->respondWithArray([
                 'token'   => $jwt,

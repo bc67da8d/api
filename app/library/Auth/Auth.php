@@ -61,6 +61,7 @@ class Auth extends Component
             if (!$this->userService->isActiveMember($user)) {
                 throw new Exception('The user is inactive');
             }
+            return $user;
         } catch (EntityNotFoundException $e) {
             throw new Exception('Wrong email/password combination');
         }
