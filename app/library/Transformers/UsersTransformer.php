@@ -7,10 +7,14 @@
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
  */
-namespace Lackky\Validation;
+namespace Lackky\Transformers;
 
-use Phalcon\Validation;
-
-class BaseValidation extends Validation
+/**
+ * Class UsersTransformer
+ *
+ * @package Lackky\Transformers
+ */
+class UsersTransformer extends BaseTransformer
 {
+
 }

@@ -5,6 +5,7 @@
  */
 
 use Phalcon\Mvc\Micro;
+use Phalcon\Mvc\Micro\Collection as MicroCollection;
 
 /**
  * Add your routes here
@@ -12,6 +13,18 @@ use Phalcon\Mvc\Micro;
 $app->get('/', function () {
     echo $this['view']->render('index');
 });
+
+$user = new MicroCollection();
+$user->setHandler(new Lackky\Controllers\UsersController());
+$user->setPrefix('/users');
+$user->get('/', 'indexAction');
+$user->post('/', 'createAction');
+$user->put('/{id}', 'updateAction');
+$user->post('/avatar', 'avatarAction');
+$user->get('/me', 'meAction');
+$user->put('/password', 'passwordAction');
+$user->get('/profile/{string}', 'profileAction');
+$app->mount($user);
 
 /**
  * Not found handler

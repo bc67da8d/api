@@ -9,6 +9,8 @@ use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Logger\Adapter\File as FileAdapter;
 use Phalcon\Cache\Frontend\Data;
 use Lackky\Auth\Auth;
+use Lackky\Fractal\NoDataArraySerializer;
+use League\Fractal\Manager as FractalManager;
 
 /**
  * Shared configuration service
@@ -101,4 +103,9 @@ $di->setShared('modelsCache', function () {
 });
 $di->setShared('auth', function () {
     return new Auth();
+});
+$di->setShared('fractal', function () {
+    $fractalManager = new FractalManager();
+    $fractalManager->setSerializer(new NoDataArraySerializer);
+    return $fractalManager;
 });
