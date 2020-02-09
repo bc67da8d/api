@@ -8,6 +8,8 @@
  * the LICENSE file that was distributed with this source code.
  */
 namespace Lackky\Models;
+use Phalcon\Filter;
+
 /**
  * Users
  * 
@@ -435,6 +437,16 @@ class Users extends ModelBase
      */
     public function getModelFilters(): array
     {
-        // TODO: Implement getModelFilters() method.
+        return [
+            'id' => Filter::FILTER_INT,
+            'name' => Filter::FILTER_STRING,
+            'email' => Filter::FILTER_STRING,
+            'gender' => Filter::FILTER_STRING,
+            'avatar' => Filter::FILTER_STRING,
+            'birthday' => Filter::FILTER_STRING,
+            'status' => Filter::FILTER_STRING,
+            'createdAt' => Filter::FILTER_INT,
+            'updatedAt' => Filter::FILTER_INT
+        ];
     }
 }
