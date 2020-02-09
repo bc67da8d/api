@@ -39,7 +39,7 @@ class AuthController extends ControllerBase
     public function loginAction()
     {
         $data = $this->parserDataRequest();
-        if (!isset($data['password']) || !isset($data['emailOrUsername'])) {
+        if (!isset($data['password']) || !isset($data['email'])) {
             return $this->respondWithError('You need provider email and password');
         }
         try {

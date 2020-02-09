@@ -26,6 +26,13 @@ $user->put('/password', 'passwordAction');
 $user->get('/profile/{string}', 'profileAction');
 $app->mount($user);
 
+$auth = new MicroCollection();
+$auth->setHandler(new Lackky\Controllers\AuthController());
+$auth->setPrefix('/auth');
+$auth->post('/', 'loginAction');
+$auth->get('/check', 'check');
+$app->mount($auth);
+
 /**
  * Not found handler
  */
