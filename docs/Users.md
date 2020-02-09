@@ -1,6 +1,6 @@
 # User
 - Content-Type: application/json
-- Endpoint: export HOST=https://dev.frmfm.com/users
+- Endpoint: export HOST=https://dev.lackky.com/users
 
 ## Create users
 
@@ -29,9 +29,7 @@ Sample request
 {
 	"email" : "hello@lackky.com",
 	"password": "lackkylove",
-	"username": "lackky",
-	"firstname" : "Thien",
-	"lastname": "Tran"
+	"name" : "Thien Tran",
 }
 curl -d user.jon -H "Content-Type: application/json" -X POST ${HOST}
 ```

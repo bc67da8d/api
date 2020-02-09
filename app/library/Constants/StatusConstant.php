@@ -9,6 +9,7 @@
  */
 
 namespace Lackky\Constants;
+
 /**
  * Class StatusConstant
  *
