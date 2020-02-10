@@ -184,7 +184,7 @@ class Users extends ModelBase
      */
     public function setPasswordForgotHash($passwordForgotHash)
     {
-        $this->passwdForgotHash = $passwordForgotHash;
+        $this->passwordForgotHash = $passwordForgotHash;
 
         return $this;
     }

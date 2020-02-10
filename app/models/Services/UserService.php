@@ -9,6 +9,7 @@
  */
 namespace Lackky\Models\Services;
 
+use Firebase\JWT\JWT;
 use Lackky\Constants\StatusConstant;
 use Lackky\Models\Services\Exceptions\EntityNotFoundException;
 use Lackky\Models\Users;
@@ -124,13 +125,17 @@ class UserService extends Service
     }
 
     /**
-     * Finds UserService by passwordForgotHash.
+     * @param $hash
      *
-     * @param  string $hash The hash string generated on sign up time.
-     * @return Users|null
+     * @return Users|\Phalcon\Mvc\ModelInterface|null
      */
     public function findFirstByPasswordForgotHash($hash)
     {
+        $user = Users::query()
+            ->where('passwordForgotHash = :hash:', ['hash' => $hash])
+            ->limit(1)
+            ->execute();
+        return  $user->getFirst() ?: null;
     }
 
     /**
@@ -301,5 +306,21 @@ class UserService extends Service
             return false;
         }
         return $user;
+    }
+    public function createJwtToken(Users $user)
+    {
+        $key  = $this->config->application->jwtSecret;
+        $time = time();
+        $expires = $time + env('EXPIRES_TOKEN');
+        $token = [
+            'iss' =>  $this->request->getURI(),
+            'iat' =>  $time,
+            'exp' =>  $expires,
+            'data' =>[
+                'id' => $user->getId(),
+                'email' => $user->getEmail(),
+            ]
+        ];
+        return ['token' =>JWT::encode($token, $key), 'expires' => $expires];
     }
 }
