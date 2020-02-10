@@ -8,11 +8,13 @@
  * the LICENSE file that was distributed with this source code.
  */
 namespace Lackky\Models;
+
+use Lackky\Models\Services\MediaDataService;
 use Phalcon\Filter;
 
 /**
  * Users
- * 
+ *
  * @date 2020-02-07, 15:24:19
  */
 class Users extends ModelBase
@@ -348,11 +350,13 @@ class Users extends ModelBase
     /**
      * Returns the value of field avatar
      *
-     * @return integer
+     * @return []
      */
     public function getAvatar()
     {
-        return $this->avatar;
+        /** @var MediaDataService $service */
+        $service = container(MediaDataService::class);
+        return $service->getMetadata($this->avatar);
     }
 
     /**

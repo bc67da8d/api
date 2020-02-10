@@ -4,6 +4,7 @@ namespace Lackky\Aws;
 
 use Lackky\Constants\UploadTypeConstant;
 use Lackky\Models\DownloadableContents;
+use Lackky\Models\MediaData;
 use Lackky\Models\Services\DownloadableContentService;
 use Aws\S3\S3Client;
 use Exception;
@@ -53,25 +54,32 @@ class Storage extends Component
         }
         try {
             if ($id) {
-                $container = container(DownloadableContentService::class);
+                $container = container(MediaData::class);
                 $download = $container->getFirstById($id);
             } else {
-                $download = new DownloadableContents();
+                $download = new MediaData();
             }
-            $this->client->putObject([
-                'Bucket' => $this->config->bucket,
-                'Key'    => $file->fileName,
-                'Body'   => fopen($file->getTempName(), 'rb'),
-                'ACL'    => $file->acl,
-                'ContentType' => $file->getRealType()
-            ]);
+
+            if ('dev' === env('APPLICATION_ENV')) {
+                $file->moveTo($file->fileName);
+            } else {
+                $this->client->putObject([
+                    'Bucket' => $this->config->bucket,
+                    'Key'    => $file->fileName,
+                    'Body'   => fopen($file->getTempName(), 'rb'),
+                    'ACL'    => $file->acl,
+                    'ContentType' => $file->getRealType()
+                ]);
+            }
             //@TODO delete file on aws and verify owner file before update
             $download->setKey($file->fileName);
             $download->setUrl(env('CDN') . '/' . $file->fileName);
             $download->setFileSize($file->getSize());
-            $download->setOriginalFileName($file->getName());
-            $download->setPrivacy($file->acl);
+            $download->setOriginalFile($file->getName());
+            $download->setAcl($file->acl);
             $download->setExpires(time() + 888888);
+            $download->setCreatedAt(time());
+            $download->setUserId($this->auth->getUserId());
             if (!$download->save()) {
                 $this->logger->error('
                     Add data to table download able content false!' .

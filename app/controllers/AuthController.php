@@ -44,7 +44,7 @@ class AuthController extends ControllerBase
         }
         try {
             $user = $this->auth->check($data);
-            $key  = base64_decode($this->config->application->jwtSecret);
+            $key  = $this->config->application->jwtSecret;
             $time = time();
             $expires = $time + env('EXPIRES_TOKEN');
             $token = [

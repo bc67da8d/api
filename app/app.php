@@ -5,8 +5,13 @@
  */
 
 use Phalcon\Mvc\Micro;
+use Phalcon\Events\Manager;
 use Phalcon\Mvc\Micro\Collection as MicroCollection;
+use Lackky\Auth\AuthenticationMiddleware;
 
+$eventsManager = new Manager();
+$eventsManager->attach('micro', new AuthenticationMiddleware());
+$app->before(new AuthenticationMiddleware());
 /**
  * Add your routes here
  */
@@ -41,4 +46,4 @@ $app->notFound(function () use ($app) {
     echo $app['view']->render('404');
 });
 
-//$app->setEventsManager($eventsManager);
+$app->setEventsManager($eventsManager);
