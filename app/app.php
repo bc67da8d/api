@@ -32,6 +32,7 @@ $user->get('/profile/{string}', 'profileAction');
 $user->post('/reset_password', 'resetPasswordAction');
 $user->post('/forgot_password', 'forgotPasswordAction');
 
+
 $app->mount($user);
 
 $auth = new MicroCollection();

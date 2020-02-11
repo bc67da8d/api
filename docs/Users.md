@@ -188,3 +188,66 @@ Result
     }
 }
 ```
+## Reset password
+
+Use the Password API with the recovery endpoint to send a password recovery email
+ (including link and recovery token) to the end user. 
+
+HTTP Request: `GET ${HOST}/users/forgot_password`
+
+```
+{
+    "email" : "user@lackky.com"
+}
+curl  -X POST ${HOST}/forgot_password?key=xxx
+-H "Content-Type: application/json" \
+```
+Result response
+```
+{
+    "success": {
+        "message": "Notification sent",
+        "code": 200,
+        "httpCode": 200
+    }
+}
+```
+
+The result of this request is password code random, and automatically included in the email to the end user. The
+link something like that
+ 
+```
+Hello Thien Tran
+
+You have requested a password reset for the user fcduythien@gmail.com.
+
+Please use this code to reset the password for the Lackky
+Here is your code: 456324
+If you did not initiate this request, please ignore this email. 
+
+```
+
+Note that the password code random is not part of the response to the API call.
+
+However, the password code random can be used in another POST request to reset the password.
+
+The token is valid exactly once in the 24 hours after it is created. One we have the token 
+we can send a POST request
+
+HTTP Request: `POST ${HOST}/users/reset_password`
+
+```
+{
+    "hash" : "456324"
+    "password" : "your new password"
+}
+```
+
+Then the result:
+
+```
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJcL3VzZXJzXC9yZXNldF9wYXNzd29yZD9rZXk9Njc3YmQzZWI5N2M2NTFiMDNlNjc2NTI5MTQyNzc2Y2MiLCJpYXQiOjE1ODE0MzEwNDksImV4cCI6MTYxMjk2NzA0OSwiZGF0YSI6eyJpZCI6IjEiLCJlbWFpbCI6ImZjZHV5dGhpZW5AZ21haWwuY29tIn19.WEMYIf9Bk7BboM-08dYae74Aeca4crb0XegwtReAJCg",
+    "expires": 1612967049
+}
+```

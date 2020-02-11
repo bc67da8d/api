@@ -12,6 +12,7 @@ return new Config([
     ],
 
     'application' => [
+        'siteName' => env('SITE_NAME', 'Lackky'),
         'domain' => env('DOMAIN', 'https://api.lackky.com'),
         'viewsDir' => APP_PATH . '/views/',
         'baseUri' => '/',

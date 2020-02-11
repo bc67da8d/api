@@ -92,17 +92,18 @@ class UsersController extends ControllerBase
             return $this->respondWithError('Something wrong to reset password');
         }
 
-        $passwordForgotHash = sha1('forgot' . microtime());
+        $passwordForgotHash = mt_rand(1000000, 9999999);
         $user->setPasswordForgotHash($passwordForgotHash);
         if (!$user->save()) {
             $this->logger->error($user->getMessages()[0]->getMessage());
             return $this->respondWithError('Something wrong to reset password');
         }
         $params = [
-            'link' => $this->config->application->domain . '/users/reset_password?hash=' . $passwordForgotHash,
             'name'  => $user->getName(),
             'email'     => $email,
-            'subject'   => 'Reset your Lackky password'
+            'siteName' => $this->config->application->siteName,
+            'subject'   => 'Reset your Lackky password',
+            'code' => $passwordForgotHash
         ];
         if (!$this->mail->send($email, 'resetpassword', $params)) {
             return $this->respondWithError('Something wrong to sent reset password');
@@ -112,10 +113,11 @@ class UsersController extends ControllerBase
     public function resetPasswordAction()
     {
         $data = $this->parserDataRequest();
-        $parameter = $this->getParameter();
-        $hash = $parameter['hash'] ?? null;
-        $user = $this->userService->findFirstByPasswordForgotHash($hash);
-        if (!$user || !isset($data['password'])) {
+
+        if (!isset($data['hash']) || !isset($data['password'])) {
+            return $this->respondWithError('Something wrong to reset password');
+        }
+        if (!$user = $this->userService->findFirstByPasswordForgotHash($data['hash'])) {
             return $this->respondWithError('Something wrong to reset password');
         }
         $user->setPasswordForgotHash(null);
