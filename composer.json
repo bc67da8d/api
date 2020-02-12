@@ -9,6 +9,7 @@
     "firebase/php-jwt": "v5.0.0",
     "league/fractal": "0.18.0",
     "phlak/semver": "^2.0",
+    "swiftmailer/swiftmailer": "^6.0",
     "symfony/css-selector": "^4.3",
     "symfony/dom-crawler": "^4.3",
     "vlucas/phpdotenv": "^3.6"

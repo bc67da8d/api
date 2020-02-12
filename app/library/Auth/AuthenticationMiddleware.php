@@ -81,7 +81,9 @@ class AuthenticationMiddleware implements MiddlewareInterface
     {
         $unsecuredRoutes = [
             ['router' => '/auth', 'action' => 'loginAction'],
-            ['router' => '/users', 'action' => 'createAction']
+            ['router' => '/users', 'action' => 'createAction'],
+            ['router' => '/users/reset_password', 'action' => 'resetPasswordAction']
+
         ];
         if ('/' == $app->getRouter()->getRewriteUri()) {
             return  true;

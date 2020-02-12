@@ -9,6 +9,7 @@ use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Logger\Adapter\File as FileAdapter;
 use Phalcon\Cache\Frontend\Data;
 use Lackky\Auth\Auth;
+use Lackky\Mail\Mailer;
 use Lackky\Fractal\NoDataArraySerializer;
 use League\Fractal\Manager as FractalManager;
 
@@ -108,4 +109,7 @@ $di->setShared('fractal', function () {
     $fractalManager = new FractalManager();
     $fractalManager->setSerializer(new NoDataArraySerializer);
     return $fractalManager;
+});
+$di->setShared('mail', function () {
+    return new Mailer();
 });

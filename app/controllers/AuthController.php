@@ -44,24 +44,7 @@ class AuthController extends ControllerBase
         }
         try {
             $user = $this->auth->check($data);
-            $key  = $this->config->application->jwtSecret;
-            $time = time();
-            $expires = $time + env('EXPIRES_TOKEN');
-            $token = [
-                'iss' =>  $this->request->getURI(),
-                'iat' =>  $time,
-                'exp' =>  $expires,
-                'data' =>[
-                    'id' => $user->getId(),
-                    'email' => $user->getEmail(),
-                ]
-            ];
-            $jwt = JWT::encode($token, $key);
-            return $this->respondWithArray([
-                'token'   => $jwt,
-                'message' => 'Successful Login',
-                'expires' => $expires
-            ]);
+            return $this->respondWithArray($this->userService->createJwtToken($user));
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return $this->respondWithError($e->getMessage());
