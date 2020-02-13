@@ -80,18 +80,12 @@ class AuthenticationMiddleware implements MiddlewareInterface
     private function isUnsecuredRoute(Micro $app)
     {
         $unsecuredRoutes = [
-            ['router' => '/auth', 'action' => 'loginAction'],
-            ['router' => '/users', 'action' => 'createAction'],
-            ['router' => '/users/reset_password', 'action' => 'resetPasswordAction']
-
+            'home',
+            ''
         ];
-        if ('/' == $app->getRouter()->getRewriteUri()) {
-            return  true;
-        }
+        $matchedRoute = $app->getRouter()->getMatchedRoute();
         foreach ($unsecuredRoutes as $route) {
-            if ($route['router'] == $app->getRouter()->getRewriteUri()
-                && $route['action'] == $app->getActiveHandler()[1]
-            ) {
+            if ($route == $matchedRoute->getName()) {
                 return true;
             }
         }

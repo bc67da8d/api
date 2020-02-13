@@ -15,7 +15,7 @@ services:
     depends_on:
       - db
       - redis
-    image: gsviec/php:7.3-alpine
+    image: gsviec/phalcon:v4
     ports:
       - "80:80"
     volumes:
