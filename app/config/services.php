@@ -6,8 +6,8 @@ use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View\Simple as View;
 use Phalcon\Mvc\Model\Manager as ModelsManager;
 use Phalcon\Events\Manager as EventsManager;
-use Phalcon\Logger\Adapter\File as FileAdapter;
 use Phalcon\Cache\Frontend\Data;
+use Phalcon\Logger\Adapter\Stream;
 use Lackky\Auth\Auth;
 use Lackky\Mail\Mailer;
 use Lackky\Fractal\NoDataArraySerializer;
@@ -85,7 +85,12 @@ $di->setShared('storage', function () {
 });
 $di->setShared('logger', function () {
     $logger = app_path('var/logs/') . date('Y-m-d') . '.log';
-    return new FileAdapter($logger, ['model' => 'a+']);
+    $adapter = new Stream($logger, ['model' => 'a+']);
+    return new Phalcon\Logger('messages',
+        [
+            'main' => $adapter,
+        ]
+    );
 });
 $di->setShared('modelsCache', function () {
     $config = include config_path('cache.php');
