@@ -34,10 +34,6 @@ class AuthenticationMiddleware implements MiddlewareInterface
      */
     public function beforeExecuteRoute(Event $event, Micro $app)
     {
-
-        if ($this->isUnsecuredRoute($app)) {
-            return true;
-        }
         $authHeader= $app->request->getHeader('Authorization');
         if ($authHeader) {
             $jwt = explode(" ", $authHeader);
@@ -71,32 +67,6 @@ class AuthenticationMiddleware implements MiddlewareInterface
     {
         return true;
     }
-
-    /**
-     * @param Micro $app
-     *
-     * @return bool
-     */
-    private function isUnsecuredRoute(Micro $app)
-    {
-        $unsecuredRoutes = [
-            ['router' => '/auth', 'action' => 'loginAction'],
-            ['router' => '/users', 'action' => 'createAction'],
-            ['router' => '/users/reset_password', 'action' => 'resetPasswordAction']
-
-        ];
-        if ('/' == $app->getRouter()->getRewriteUri()) {
-            return  true;
-        }
-        foreach ($unsecuredRoutes as $route) {
-            if ($route['router'] == $app->getRouter()->getRewriteUri()
-                && $route['action'] == $app->getActiveHandler()[1]
-            ) {
-                return true;
-            }
-        }
-    }
-
     /**
      * @param Micro $app
      *
