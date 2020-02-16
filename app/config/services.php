@@ -2,7 +2,7 @@
 
 use Lackky\Aws\Storage;
 use Phalcon\Mvc\Dispatcher;
-use Phalcon\Mvc\Url as UrlResolver;
+use Phalcon\Url as UrlResolver;
 use Phalcon\Mvc\View\Simple as View;
 use Phalcon\Mvc\Model\Manager as ModelsManager;
 use Phalcon\Events\Manager as EventsManager;
@@ -86,7 +86,8 @@ $di->setShared('storage', function () {
 $di->setShared('logger', function () {
     $logger = app_path('var/logs/') . date('Y-m-d') . '.log';
     $adapter = new Stream($logger, ['model' => 'a+']);
-    return new Phalcon\Logger('messages',
+    return new Phalcon\Logger(
+        'messages',
         [
             'main' => $adapter,
         ]

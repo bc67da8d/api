@@ -9,8 +9,7 @@
  */
 namespace Lackky\Auth;
 
-use Lackky\Models\Users;
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Injectable;
 use Lackky\Models\Services;
 use Lackky\Models\Services\Exceptions\EntityNotFoundException;
 use Exception;
@@ -23,7 +22,7 @@ use Exception;
  * @property \Phalcon\Config $config
  * @package Lackky\Auth
  */
-class Auth extends Component
+class Auth extends Injectable
 {
     /**
      * @var Services\UserService
@@ -42,7 +41,7 @@ class Auth extends Component
      */
     public function __construct($cookieLifetime = null)
     {
-        $this->userService = $this->di->getShared(Services\UserService::class);
+        $this->userService = $this->getDI()->getShared(Services\UserService::class);
 
         if ($cookieLifetime === null) {
             $cookieLifetime = $this->config->get('application')->cookieLifetime;
@@ -81,8 +80,9 @@ class Auth extends Component
      */
     public function getAuth()
     {
-        if ($this->cookies->has('auth')) {
-            return (array) $this->cookies->get('auth')->getValue()->data;
+        if ($this->currentUser) {
+            $data = (array) $this->currentUser;
+            return  (array) $data['data'];
         }
         return null;
     }
@@ -112,22 +112,6 @@ class Auth extends Component
 
         $identity = $this->getAuth();
         return (int) $identity['id'];
-    }
-
-    /**
-     * Returns the current identity
-     *
-     * @return string|null
-     */
-    public function getUsername()
-    {
-        if (!$this->isAuthorizedVisitor()) {
-            return null;
-        }
-
-        $identity = $this->getAuth();
-
-        return $identity['username'];
     }
 
     /**
@@ -177,7 +161,7 @@ class Auth extends Component
      */
     public function isAuthorizedVisitor()
     {
-        return $this->cookies->has('auth');
+        return $this->currentUser;
     }
 
     /**

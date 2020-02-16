@@ -31,8 +31,6 @@ $user->put('/password', 'passwordAction');
 $user->get('/profile/{string}', 'profileAction');
 $user->post('/reset_password', 'resetPasswordAction');
 $user->post('/forgot_password', 'forgotPasswordAction');
-
-
 $app->mount($user);
 
 $auth = new MicroCollection();
@@ -41,6 +39,21 @@ $auth->setPrefix('/auth');
 $auth->post('/', 'loginAction');
 $auth->get('/check', 'check');
 $app->mount($auth);
+
+$post = new MicroCollection();
+$post->setHandler(new Lackky\Controllers\PostsController());
+$post->setPrefix('/posts');
+$post->post('/', 'createAction');
+$post->get('/check', 'check');
+$app->mount($post);
+
+$upload = new MicroCollection();
+$upload->setHandler(new Lackky\Controllers\UploadsController());
+$upload->setPrefix('/uploads');
+$upload->get('/', 'indexAction');
+$upload->post('/', 'createAction');
+$upload->post('/{id}', 'updateAction');
+$app->mount($upload);
 
 /**
  * Not found handler
