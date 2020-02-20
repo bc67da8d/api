@@ -34,7 +34,7 @@ class UsersController extends ControllerBase
         if ($this->modelService->user->findFirstByEmail($data['email'])) {
             return $this->respondWithError('That email is taken. Try another');
         }
-        if (!$user = $this->userService->create($data)) {
+        if (!$user = $this->modelService->user->create($data)) {
             return $this->respondWithError('Add user fail');
         }
 

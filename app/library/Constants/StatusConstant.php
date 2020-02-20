@@ -17,6 +17,12 @@ namespace Lackky\Constants;
  */
 class StatusConstant
 {
-    const STATUS_ACTIVE = 'active';
-    const STATUS_INACTIVE = 'inactive';
+    /**
+     * inactive or private status
+     */
+    const STATUS_0 = 0;
+    /**
+     * Can be active, public status
+     */
+    const STATUS_1 = 1;
 }

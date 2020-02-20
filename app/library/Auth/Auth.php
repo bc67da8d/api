@@ -29,25 +29,17 @@ class Auth extends Injectable
      */
     protected $userService;
 
-    /**
-     * @var int
-     */
-    protected $cookieLifetime;
+    protected $userCurrent;
 
     /**
      * Auth constructor.
      *
-     * @param null $cookieLifetime
+     * @param null $user
      */
-    public function __construct($cookieLifetime = null)
+    public function __construct($user = null)
     {
         $this->userService = $this->getDI()->getShared(Services\UserService::class);
-
-        if ($cookieLifetime === null) {
-            $cookieLifetime = $this->config->get('application')->cookieLifetime;
-        }
-
-        $this->cookieLifetime = $cookieLifetime;
+        $this->userCurrent = $user;
     }
 
     /**
@@ -80,8 +72,8 @@ class Auth extends Injectable
      */
     public function getAuth()
     {
-        if ($this->currentUser) {
-            $data = (array) $this->currentUser;
+        if ($this->userCurrent) {
+            $data = (array) $this->userCurrent;
             return  (array) $data['data'];
         }
         return null;
@@ -161,7 +153,7 @@ class Auth extends Injectable
      */
     public function isAuthorizedVisitor()
     {
-        return $this->currentUser;
+        return $this->userCurrent;
     }
 
     /**

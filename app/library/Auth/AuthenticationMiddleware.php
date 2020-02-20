@@ -42,8 +42,8 @@ class AuthenticationMiddleware implements MiddlewareInterface
                 try {
                     $decoded = JWT::decode($jwt[1], $key, ['HS256']);
                     // @TODO verify
-                    $app->setService('currentUser', function () use ($decoded) {
-                        return $decoded;
+                    $app->setService('auth', function () use ($decoded) {
+                        return new Auth($decoded);
                     });
                 } catch (\Exception $e) {
                     return $this->sendError($app);

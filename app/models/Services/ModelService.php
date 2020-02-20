@@ -14,7 +14,7 @@ use Phalcon\Exception;
 /**
  * Class ModelService
  * @property UserService $user
- *
+ * @property PostService $post
  * @package Lackky\Models\Services
  */
 class ModelService
