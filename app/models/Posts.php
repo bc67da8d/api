@@ -8,6 +8,8 @@
  * the LICENSE file that was distributed with this source code.
  */
 namespace Lackky\Models;
+use Phalcon\Filter;
+
 /**
  * Posts
  * 
@@ -371,6 +373,12 @@ class Posts extends ModelBase
     public function initialize()
     {
         $this->setSource("posts");
+        $this->belongsTo(
+            'userId',
+            Users::class,
+            'id',
+            ['alias' => 'user']
+        );
     }
 
     /**
@@ -404,6 +412,18 @@ class Posts extends ModelBase
      */
     public function getModelFilters(): array
     {
-        // TODO: Implement getModelFilters() method.
+        return [
+            'id' => Filter::FILTER_INT,
+            'title' => Filter::FILTER_STRING,
+            'description' => Filter::FILTER_STRING,
+            'image' => Filter::FILTER_STRING,
+            'video' => Filter::FILTER_STRING,
+            'hashTag' => Filter::FILTER_STRING,
+            'numberView' => Filter::FILTER_INT,
+            'numberReply' => Filter::FILTER_INT,
+            'status' => Filter::FILTER_INT,
+            'createdAt' => Filter::FILTER_INT,
+            'updatedAt' => Filter::FILTER_INT
+        ];
     }
 }

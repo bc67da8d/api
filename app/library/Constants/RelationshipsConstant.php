@@ -7,7 +7,6 @@ namespace Lackky\Constants;
  */
 class RelationshipsConstant
 {
-    const ARTWORKS       = 'artworks';
-    const USERS          = 'users';
+    const USER          = 'user';
     const USER_FOLLOWING = 'userFollowing';
 }

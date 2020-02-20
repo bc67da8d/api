@@ -9,7 +9,7 @@
  */
 namespace Lackky\Controllers;
 
-use Lackky\Transformers\PostTransformer;
+use Lackky\Transformers\PostsTransformer;
 use Lackky\Validation\PostValidation;
 
 /**
@@ -32,6 +32,6 @@ class PostsController extends ControllerBase
             return $this->respondWithError('Add post fail');
         }
 
-        return $this->respondWithItem($post, new PostTransformer());
+        return $this->respondWithItem($post, new PostsTransformer());
     }
 }
