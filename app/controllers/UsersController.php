@@ -9,13 +9,8 @@
  */
 namespace Lackky\Controllers;
 
-use Lackky\Auth\Auth;
 use Lackky\Aws\Storage;
 use Lackky\Mail\Mailer;
-use Lackky\Models\Services\UserService;
-use Firebase\JWT\JWT;
-use Exception;
-use Lackky\Models\Users;
 use Lackky\Transformers\UsersTransformer;
 use Lackky\Validation\AvatarUserValidation;
 use Lackky\Validation\UserValidation;
@@ -29,15 +24,6 @@ use Lackky\Validation\UserValidation;
 class UsersController extends ControllerBase
 {
 
-    /**
-     * @var UserService
-     */
-    protected $userService;
-
-    public function onConstruct()
-    {
-        $this->userService = new UserService();
-    }
     public function createAction()
     {
         $data = $this->parserDataRequest();
@@ -45,7 +31,7 @@ class UsersController extends ControllerBase
         if ($validation) {
             return $this->respondWithError($validation);
         }
-        if ($this->userService->findFirstByEmail($data['email'])) {
+        if ($this->modelService->user->findFirstByEmail($data['email'])) {
             return $this->respondWithError('That email is taken. Try another');
         }
         if (!$user = $this->userService->create($data)) {
@@ -70,7 +56,7 @@ class UsersController extends ControllerBase
             if (!$upload= $this->storage->uploadAvatar($files[0])) {
                 return $this->respondWithError('Update avatar not success');
             }
-            $user = $this->userService->findFirstById($userId);
+            $user = $this->modelService->user->findFirstById($userId);
             if (!$user) {
                 return $this->respondWithError('Unauthorized');
             }
@@ -88,7 +74,7 @@ class UsersController extends ControllerBase
     {
         $data = $this->parserDataRequest();
         $email = $data['email'] ?? null;
-        if (!$user = $this->userService->findFirstByEmail($email)) {
+        if (!$user = $this->modelService->user->findFirstByEmail($email)) {
             return $this->respondWithError('Something wrong to reset password');
         }
 
@@ -117,13 +103,13 @@ class UsersController extends ControllerBase
         if (!isset($data['hash']) || !isset($data['password'])) {
             return $this->respondWithError('Something wrong to reset password');
         }
-        if (!$user = $this->userService->findFirstByPasswordForgotHash($data['hash'])) {
+        if (!$user = $this->modelService->user->findFirstByPasswordForgotHash($data['hash'])) {
             return $this->respondWithError('Something wrong to reset password');
         }
         $user->setPasswordForgotHash(null);
         $user->setPassword($this->security->hash($data['password']));
         $user->setUpdatedAt(time());
         $user->save();
-        return $this->respondWithArray($this->userService->createJwtToken($user));
+        return $this->respondWithArray($this->modelService->user->createJwtToken($user));
     }
 }

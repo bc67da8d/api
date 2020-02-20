@@ -10,7 +10,7 @@
 namespace Lackky\Controllers;
 
 use Lackky\Models\ModelBase;
-use Lackky\Models\Services\DownloadableContentService;
+use Lackky\Models\Services\ModelService;
 use Lackky\Transformers\BaseTransformer;
 use League\Fractal\Pagination\PhalconFrameworkPaginatorAdapter;
 use League\Fractal\Resource\Collection;
@@ -28,6 +28,8 @@ use Phalcon\ValidationInterface;
 /**
  * Class ControllerBase
  * @property FractalManager $fractal
+ * @property ModelService $modelService
+ *
  * @package Lackky\Controllers
  */
 class ControllerBase extends Controller
@@ -237,26 +239,5 @@ class ControllerBase extends Controller
             return $m->getMessage();
         }
         return false;
-    }
-    /**
-     * @param $id
-     *
-     * @return array
-     */
-    protected function getMetadataFile($id)
-    {
-        /** @var DownloadableContentService $downloadContent */
-        $downloadContent = container(DownloadableContentService::class);
-        return $downloadContent->getMetadata($id);
-    }
-    public function modelFilters(ModelBase $model)
-    {
-        $fields     = array_keys($model->getModelFilters());
-        $data       = [];
-        foreach ($fields as $field) {
-            $getter = 'get' . ucfirst($field);
-            $data[$field] = $model->$getter();
-        }
-        return $data;
     }
 }

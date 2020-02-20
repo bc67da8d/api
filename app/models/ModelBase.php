@@ -158,4 +158,11 @@ abstract class ModelBase extends Model
         $filterService = $this->getDI()->get('filter');
         return $filterService->sanitize($value, $filter);
     }
+    /**
+     * Reset a model instance data
+     */
+    public function reset()
+    {
+        // TODO: Implement reset() method.
+    }
 }

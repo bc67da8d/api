@@ -37,5 +37,26 @@ services:
       PMA_PASSWORD: lackky
   redis:
     image: redis:alpine
+#  elasticsearch:
+#    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.6.0'
+#    volumes:
+#      - 'esdata:/usr/share/elasticsearch/data'
+#    environment:
+#      - cluster.name=docker-cluster
+#      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+#      - discovery.type=single-node
+#    ports:
+#      - 9200:9200
+#      - 9300:9300
+#  kibana:
+#    image: 'docker.elastic.co/kibana/kibana:7.6.0'
+#    depends_on:
+#      - elasticsearch
+#    environment:
+#      SERVER_NAME: localhost
+#      ELASTICSEARCH_URL: 'http://elasticsearch:9200/'
+#    ports:
+#      - 5601:5601
 volumes:
   db_data:
+  esdata:

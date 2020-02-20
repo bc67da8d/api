@@ -119,3 +119,6 @@ $di->setShared('fractal', function () {
 $di->setShared('mail', function () {
     return new Mailer();
 });
+$di->setShared('modelService', function () {
+    return new \Lackky\Models\Services\ModelService();
+});
