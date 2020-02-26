@@ -43,7 +43,7 @@ class Users extends AbstractMigration
             ->addColumn('gender', 'enum', ['values' => ['male', 'female', 'unknown']])
             ->addColumn('birthday', 'integer', ['limit' => 11, 'null' => true])
             ->addColumn('avatar', 'integer', ['limit' => 11, 'null' => true])
-            ->addColumn('status', 'enum', ['values' => ['active', 'inactive', 'deleted']])
+            ->addColumn('status', 'enum', ['values' => ['0', '1', '2']])
             ->addColumn('created_at', 'integer')
             ->addColumn('updated_at', 'integer', ['null' => true])
             ->create();

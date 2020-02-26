@@ -37,11 +37,11 @@ class Posts extends AbstractMigration
             ->addColumn('title', 'string', ['limit' => 200])
             ->addColumn('description', 'text', ['null' => true])
             ->addColumn('image', 'string', ['limit' => 200, 'null' => true])
-            ->addColumn('video', 'integer', ['null' => true])
+            ->addColumn('video', 'string', ['limit' => 200, 'null' => true])
             ->addColumn('hash_tag', 'string', ['limit' => 200, 'null' => true])
             ->addColumn('number_view', 'integer', ['null' => true])
             ->addColumn('number_reply', 'integer', ['null' => true])
-            ->addColumn('status', 'enum', ['values' => ['public', 'private', 'deleted']])
+            ->addColumn('status', 'enum', ['values' => ['0', '1', '2']])
             ->addColumn('created_at', 'integer')
             ->addColumn('updated_at', 'integer', ['null' => true])
             ->create();

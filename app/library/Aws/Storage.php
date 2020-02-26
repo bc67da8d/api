@@ -1,21 +1,26 @@
 <?php
-
+/**
+ * This file is part of the Lackky API.
+ *
+ * (c) Lackky Team <hello@lackky.com>
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
 namespace Lackky\Aws;
 
 use Lackky\Constants\UploadTypeConstant;
-use Lackky\Models\DownloadableContents;
 use Lackky\Models\MediaData;
-use Lackky\Models\Services\DownloadableContentService;
 use Aws\S3\S3Client;
 use Exception;
+use Phalcon\Di\Injectable;
 use Phalcon\Http\Request\FileInterface;
-use Phalcon\Mvc\User\Component;
 
 /**
  * Class Storage
  * @package Lackky\Aws
  */
-class Storage extends Component
+class Storage extends Injectable
 {
     /**
      * @var object
@@ -71,7 +76,6 @@ class Storage extends Component
                     'ContentType' => $file->getRealType()
                 ]);
             }
-            //@TODO delete file on aws and verify owner file before update
             $download->setKey($file->fileName);
             $download->setUrl(env('CDN') . '/' . $file->fileName);
             $download->setFileSize($file->getSize());
@@ -119,8 +123,7 @@ class Storage extends Component
         if (!$this->mediaType->imageCheck($file->getRealType())) {
             return $this->getError('You need chose format image');
         }
-        $auth = container('auth');
-        $fileName = md5($auth->getUserId()) . '.' . $file->getExtension();
+        $fileName = md5($this->auth->getUserId()) . '.' . $file->getExtension();
         $fileName = UploadTypeConstant::USER_AVATAR . '/' . $fileName;
         $file->fileName = $fileName;
         return $this->upload($file);
@@ -132,13 +135,13 @@ class Storage extends Component
      *
      * @return array|object
      */
-    public function uploadArtwork(FileInterface $file, $id = null)
+    public function uploadVideo(FileInterface $file, $id = null)
     {
         if (!$this->mediaType->archiveCheck($file->getRealType())) {
             return $this->getError('You need chose format zip');
         }
         $fileName = md5(rand()) . '.' . $file->getExtension();
-        $fileName = UploadTypeConstant::ARTWORK . '/' . $fileName;
+        $fileName = UploadTypeConstant::VIDEO . '/' . $fileName;
         $file->fileName = $fileName;
         return $this->upload($file, $id);
     }

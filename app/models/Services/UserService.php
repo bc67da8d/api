@@ -298,7 +298,7 @@ class UserService extends Service
         }
         $user = new Users();
         $user->setRoleId(RoleConstant::USER_ROLE_ID);
-        $user->setStatus(StatusConstant::STATUS_ACTIVE);
+        $user->setStatus(StatusConstant::STATUS_1);
         $user->setCreatedAt(time());
         $user->assign($data);
         if (!$user->save()) {
