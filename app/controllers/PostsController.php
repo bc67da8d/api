@@ -31,7 +31,19 @@ class PostsController extends ControllerBase
         if (!$post = $this->modelService->post->create($data)) {
             return $this->respondWithError('Add post fail');
         }
-
+        return $this->respondWithItem($post, new PostsTransformer());
+    }
+    public function updateAction($id)
+    {
+        $data = $this->parserDataRequest();
+        if (!$this->modelService->post->isMyPost($id)) {
+            return $this->respondWithError(t('You have not permission to edit post'));
+        }
+        $data['id'] = $id;
+        if (!$post = $this->modelService->post->update($data)) {
+            return $this->respondWithError(t('Update post fail'));
+        }
+        //Add indexer to elastic
         return $this->respondWithItem($post, new PostsTransformer());
     }
 }
