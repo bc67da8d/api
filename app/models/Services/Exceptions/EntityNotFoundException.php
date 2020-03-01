@@ -27,7 +27,6 @@ class EntityNotFoundException extends Exception
     public function __construct($id, $type = 'id', $code = 0, Exception $previous = null)
     {
         $this->id = $id;
-
         parent::__construct(
             sprintf('No entity found for %s "%s"', $type, $this->getId()),
             $code,

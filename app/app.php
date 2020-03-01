@@ -44,6 +44,7 @@ $post = new MicroCollection();
 $post->setHandler(new Lackky\Controllers\PostsController());
 $post->setPrefix('/posts');
 $post->post('/', 'createAction');
+$post->put('/{id}', 'updateAction');
 $post->get('/check', 'check');
 $app->mount($post);
 
