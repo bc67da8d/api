@@ -26,19 +26,18 @@ class PostService extends Service
 
 
     /**
-     * Finds UserService by ID.
+     * @param $id
      *
-     * @param  int $id The UserService ID.
-     * @return Users|\Phalcon\Mvc\ModelInterface|null
+     * @return Posts|\Phalcon\Mvc\ModelInterface|null
      */
     public function findFirstById($id)
     {
-        $user = Users::query()
+        $post = Posts::query()
             ->where('id = :id:', ['id' => $id])
             ->limit(1)
             ->execute();
 
-        return $user->getFirst() ?: null;
+        return $post->getFirst() ?: null;
     }
 
     /**
@@ -74,5 +73,42 @@ class PostService extends Service
             return false;
         }
         return $post;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return bool|mixed
+     */
+    public function update($data)
+    {
+        if (!isset($data['id'])) {
+            return false;
+        }
+        $post = $this->findFirstById($data['id']);
+        $post->setUpdatedAt(time());
+        $post->assign($data);
+        if (!$post->save()) {
+            $this->logger->error($post->getMessages()[0]->getMessage());
+            return false;
+        }
+        return $post;
+    }
+
+    /**
+     * @param $id
+     *
+     * @return bool|Posts
+     */
+    public function isMyPost($id)
+    {
+        $post = Posts::query()
+            ->where('id = :id: AND userId = :userId:', [
+                'id' => $id, 'userId' => $this->auth->getUserId()
+            ])
+            ->limit(1)
+            ->execute();
+
+        return $post->getFirst() ?: false;
     }
 }

@@ -354,9 +354,7 @@ class Users extends ModelBase
      */
     public function getAvatar()
     {
-        /** @var MediaDataService $service */
-        $service = container(MediaDataService::class);
-        return $service->getMetadata($this->avatar);
+        return $this->getMetadataFile($this->avatar);
     }
 
     /**

@@ -9,6 +9,7 @@
  */
 namespace Lackky\Models;
 
+use Lackky\Models\Services\ModelService;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\Mvc\Model;
 use Phalcon\Filter;
@@ -164,5 +165,11 @@ abstract class ModelBase extends Model
     public function reset()
     {
         // TODO: Implement reset() method.
+    }
+    public function getMetadataFile($id)
+    {
+        /** @var ModelService $service */
+        $service = container('modelService');
+        return $service->mediaData->getMetadata($id);
     }
 }
