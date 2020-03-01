@@ -13,6 +13,7 @@ use Phalcon\Cache\Backend\Libmemcached;
 use Phalcon\Config;
 use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\Mvc\Model\ResultsetInterface;
+use Phalcon\Paginator\Adapter\QueryBuilder;
 use function sha1;
 
 /**
@@ -121,5 +122,69 @@ trait QueryTrait
         }
 
         return $this->getResults($config, $cache, $builder, $where);
+    }
+    /**
+     * @param $class
+     * @param $params
+     *
+     * @return QueryBuilder
+     */
+    public function getPaginator($class, $params)
+    {
+
+        $builder = new Builder();
+        $builder->addFrom($class, 'a');
+        if (!empty($params['columns'])) {
+            $builder->columns($params['columns']);
+        }
+        if (!empty($params['joins'])) {
+            foreach ($params['joins'] as $join) {
+                $type = (string) $join['type'];
+                if (in_array($type, ['innerJoin', 'leftJoin', 'rightJoin', 'join'])) {
+                    $builder->$type('Lackky\\Models\\' . $join['model'], $join['on'], $join['alias']);
+                }
+            }
+        }
+        if (!empty($params['where'])) {
+            if (is_array($params['where'])) {
+                foreach ($params['where'] as $field => $value) {
+                    //This is option for ranger filter
+                    if (is_array($value)) {
+                        foreach ($value as $key => $rangeFilter) {
+                            $builder->andWhere(
+                                $rangeFilter['bind'],
+                                [$key => $rangeFilter['value']]
+                            );
+                        }
+                    } else {
+                        $keys = explode('.', $field);
+                        $builder->andWhere(
+                            sprintf('%s = :%s:', $field, $keys[1]),
+                            [$keys[1] => $value]
+                        );
+                    }
+                }
+            } else {
+                $builder->where($params['where']);
+            }
+        }
+        if (!empty($params['orWhere'])) {
+            $builder->orWhere($params['orWhere']);
+        }
+        if (!empty($params['orderBy'])) {
+            $builder->orderBy($params['orderBy']);
+        }
+        if (!empty($params['groupBy'])) {
+            $builder->groupBy($params['groupBy']);
+        }
+
+        $paginator = new QueryBuilder(
+            [
+                'builder' => $builder,
+                'limit'   => $params['limit'],
+                'page'    => $params['page'],
+            ]
+        );
+        return $paginator;
     }
 }

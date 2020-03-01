@@ -43,9 +43,10 @@ $app->mount($auth);
 $post = new MicroCollection();
 $post->setHandler(new Lackky\Controllers\PostsController());
 $post->setPrefix('/posts');
+$post->get('/', 'indexAction');
 $post->post('/', 'createAction');
 $post->put('/{id}', 'updateAction');
-$post->get('/check', 'check');
+$post->delete('/{id}', 'deleteAction');
 $app->mount($post);
 
 $upload = new MicroCollection();
