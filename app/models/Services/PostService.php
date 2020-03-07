@@ -108,17 +108,9 @@ class PostService extends Service
         return $post->getFirst() ?: false;
     }
 
-    /**
-     * @param $params
-     *
-     * @return \Phalcon\Paginator\Adapter\QueryBuilder
-     */
     public function getPaginatorPosts($params)
     {
-        $where = [
-            'a.status' => StatusConstant::STATUS_1
-        ];
-        $params['where'] = $where;
+        $params['where'] = ['a.status' => StatusConstant::STATUS_1];
         $params['orderBy'] = 'a.id DESC';
         return $this->getPaginator(Posts::class, $params);
     }

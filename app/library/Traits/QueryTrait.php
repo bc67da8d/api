@@ -123,12 +123,7 @@ trait QueryTrait
 
         return $this->getResults($config, $cache, $builder, $where);
     }
-    /**
-     * @param $class
-     * @param $params
-     *
-     * @return QueryBuilder
-     */
+
     public function getPaginator($class, $params)
     {
 

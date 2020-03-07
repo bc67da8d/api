@@ -3,7 +3,7 @@ namespace Lackky\Models\Services;
 
 use Lackky\Traits\QueryTrait;
 use Phalcon\Di;
-use Phalcon\DiInterface;
+use Phalcon\Di\DiInterface;
 use Phalcon\Di\Injectable;
 
 /**
@@ -11,7 +11,7 @@ use Phalcon\Di\Injectable;
  *
  * @property \Phalcon\Config $config
  * @property \Phalcon\Security\Random $random
- * @property \Phalcon\Logger\AdapterInterface $logger
+ * @property \Phalcon\Logger $logger
  *
  * @package Lackky\Models\Services
  */
