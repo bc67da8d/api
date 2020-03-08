@@ -9,6 +9,7 @@
  */
 namespace Lackky\Controllers;
 
+use Lackky\Constants\StatusConstant;
 use Lackky\Transformers\PostsTransformer;
 use Lackky\Validation\PostValidation;
 
@@ -45,5 +46,23 @@ class PostsController extends ControllerBase
         }
         //Add indexer to elastic
         return $this->respondWithItem($post, new PostsTransformer());
+    }
+    public function deleteAction($id)
+    {
+        if (!$post = $this->modelService->post->isMyPost($id)) {
+            return $this->respondWithError(t('You have not permission to edit post'));
+        }
+        $post->setStatus(StatusConstant::STATUS_2);
+        $post->setUpdatedAt(time());
+        if (!$post->save()) {
+            $this->respondWithError(t('Something wrong to delete post'));
+        }
+        return $this->respondWithSuccess(t('Delete post success'));
+    }
+    public function indexAction()
+    {
+        $params = $this->getParameter();
+        $posts = $this->modelService->post->getPaginatorPosts($params);
+        return $this->respondWithPagination($posts, new PostsTransformer());
     }
 }

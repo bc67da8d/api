@@ -25,4 +25,8 @@ class StatusConstant
      * Can be active, public status
      */
     const STATUS_1 = 1;
+    /**
+     * This is status for delete, for example when we was delete a post
+     */
+    const STATUS_2 = 2;
 }

@@ -18,12 +18,12 @@ use League\Fractal\Resource\Item;
 use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
+use Phalcon\Paginator\Adapter\AdapterInterface;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 use Phalcon\Paginator\Adapter\NativeArray as PaginatorNativeArray;
 use Phalcon\Paginator\Adapter\QueryBuilder as PaginatorQueryBuilder;
-use Phalcon\Paginator\AdapterInterface;
+
 use League\Fractal\Manager as FractalManager;
-use Phalcon\ValidationInterface;
 
 /**
  * Class ControllerBase
@@ -84,7 +84,7 @@ class ControllerBase extends Controller
 
     /**
      * @param AdapterInterface $paginator
-     * @param BaseTransformer|callable $callback
+     * @param $callback
      *
      * @return ResponseInterface
      */
@@ -92,8 +92,8 @@ class ControllerBase extends Controller
         AdapterInterface $paginator,
         $callback
     ) {
-        $pagination = $paginator->getPaginate();
-        $resource = new Collection($pagination->items, $callback);
+        $pagination = $paginator->paginate();
+        $resource = new Collection($pagination->getItems(), $callback);
         $resource->setPaginator(new PhalconFrameworkPaginatorAdapter($pagination));
 
         $rootScope = $this->fractal->createData($resource);

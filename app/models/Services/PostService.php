@@ -9,13 +9,10 @@
  */
 namespace Lackky\Models\Services;
 
-use Firebase\JWT\JWT;
-use Lackky\Constants\PostConstant;
 use Lackky\Constants\StatusConstant;
 use Lackky\Models\Posts;
 use Lackky\Models\Services\Exceptions\EntityNotFoundException;
 use Lackky\Models\Users;
-use Lackky\Constants\RoleConstant;
 
 /**
  * Class PostService
@@ -23,7 +20,6 @@ use Lackky\Constants\RoleConstant;
  */
 class PostService extends Service
 {
-
 
     /**
      * @param $id
@@ -110,5 +106,12 @@ class PostService extends Service
             ->execute();
 
         return $post->getFirst() ?: false;
+    }
+
+    public function getPaginatorPosts($params)
+    {
+        $params['where'] = ['a.status' => StatusConstant::STATUS_1];
+        $params['orderBy'] = 'a.id DESC';
+        return $this->getPaginator(Posts::class, $params);
     }
 }
