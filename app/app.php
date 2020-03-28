@@ -24,7 +24,7 @@ $user->setHandler(new Lackky\Controllers\UsersController());
 $user->setPrefix('/users');
 $user->get('/', 'indexAction');
 $user->post('/', 'createAction');
-$user->put('/{id}', 'updateAction');
+$user->put('/', 'updateAction');
 $user->post('/avatar', 'avatarAction');
 $user->get('/me', 'meAction');
 $user->put('/password', 'passwordAction');

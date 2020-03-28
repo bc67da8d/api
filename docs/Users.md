@@ -8,19 +8,14 @@ Method: POST
 
 Request Body Payload
 
-| Property Name        | Type           | Description  |
-| -------------        |:---------------:| -----:|
-| email                | string       |   Email is required |
-| password             | string       |   Password is required |
-| bio                  | string       |    Can empty|
 
-Response Payload
+|Property Name        | Type           | Description  | Default|Required|
+|:--------------|:---------|:------:|----|----|
+|email | string|The email to create a user |n/a| yes|
+|password |string | The password to login |n/a|yes|
+|name|string| The name to display profile| n/a|yes|
+|bio| string| Introduce yourself| n/a| no|
 
-| Property Name        | Type           | Description  |
-| -------------        |:---------------:| -----:|
-| email                | string       | Email is required |
-| password             | string       |   Password is required |
-| bio                  | string      |    Can empty|
 
 Sample request
 
@@ -38,42 +33,23 @@ Sample response
 ```
  {
      "data": {
-         "id": 7,
-         "roleId": 5,
-         "username": "lasckky",
+         "id": 1,
+         "name": "Thien Tran",
          "email": "hello@lackky.com",
-         "title": null,
-         "firstname": "Thien",
-         "lastname": "Tran",
-         "image": null,
-         "cover": null,
-         "country": null,
-         "zone": null,
-         "address": null,
-         "zipcode": null,
-         "profile": null,
-         "bio": null,
-         "url": null,
-         "amount": null,
-         "deposited": null,
-         "lastLogin": null,
-         "active": null,
-         "language": null,
-         "specialRoles": null,
-         "creationDate": "2019-08-10 08:12:35",
-         "modifiedDate": null,
-         "activeDate": null,
-         "artistNameUrl": null,
-         "organizational": null,
-         "emailNotification": null,
-         "deviceRegistered": null
+         "gender": "male",
+         "bio" : null,
+         "avatar": null,
+         "birthday": null,
+         "status": 1,
+         "createdAt": 1585024996,
+         "updatedAt": null
      }
  }
 ```
 ## Update users
 
 ``` 
-curl -d '{"fullName" : "Lackky", "bio" : " Iam developer", "phone" : "012345678"}'
+curl -d '{"name" : "Lackky", "bio" : " I am CTO"}'
 \ -H "Content-Type: application/json" -X PUT ${HOST}
 ```
 

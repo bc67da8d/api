@@ -97,6 +97,10 @@ class Users extends ModelBase
      * @var integer
      */
     protected $updatedAt;
+    /**
+     * @var string
+     */
+    protected $bio;
 
     /**
      * Method to set the value of field id
@@ -406,6 +410,21 @@ class Users extends ModelBase
         $this->setSource("users");
     }
 
+    /**
+     * @param string|null $bio
+     */
+    public function setBio(string $bio): void
+    {
+        $this->bio = $bio;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
 
     /**
      * Independent Column Mapping.
@@ -426,6 +445,7 @@ class Users extends ModelBase
             'gender' => 'gender',
             'avatar' => 'avatar',
             'birthday' => 'birthday',
+            'bio' => 'bio',
             'status' => 'status',
             'created_at' => 'createdAt',
             'updated_at' => 'updatedAt'
@@ -446,6 +466,7 @@ class Users extends ModelBase
             'gender' => Filter::FILTER_STRING,
             'avatar' => Filter::FILTER_STRING,
             'birthday' => Filter::FILTER_STRING,
+            'bio' => Filter::FILTER_STRING,
             'status' => Filter::FILTER_STRING,
             'createdAt' => Filter::FILTER_INT,
             'updatedAt' => Filter::FILTER_INT

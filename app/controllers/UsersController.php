@@ -112,4 +112,9 @@ class UsersController extends ControllerBase
         $user->save();
         return $this->respondWithArray($this->modelService->user->createJwtToken($user));
     }
+    public function updateAction()
+    {
+        $data = $this->parserDataRequest();
+
+    }
 }
