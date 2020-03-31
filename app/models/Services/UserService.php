@@ -284,6 +284,7 @@ class UserService extends Service
      * @param $data
      *
      * @return Users|bool
+     * @throws \Lackky\Models\ModelException
      */
     public function create($data)
     {
@@ -292,9 +293,9 @@ class UserService extends Service
             $data['gender'] = 'male';
         }
         $user = new Users();
-        $user->setRoleId(RoleConstant::ROLE['member']);
-        $user->setStatus(UserConstant::STATUS['active']);
-        $user->setCreatedAt(time());
+        $user->set('roleId', RoleConstant::ROLE['member']);
+        $user->set('status', UserConstant::STATUS['active']);
+        $user->set('createdAt', time());
         $user->assign($data);
         if (!$user->save()) {
             container('logger')->error('Add user fall '. $user->getMessages()[0]->getMessage());

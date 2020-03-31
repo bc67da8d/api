@@ -128,20 +128,10 @@ abstract class ModelBase extends Model
     private function getSetFields(string $type, string $field, $value = '')
     {
         $return      = null;
-        $modelFields = $this->getModelFilters();
-        $filter      = $modelFields[$field] ?? false;
-        if (false === $filter) {
-            throw new ModelException(
-                sprintf(
-                    'Field [%s] not found in this model',
-                    $field
-                )
-            );
-        }
         if ('get' === $type) {
-            $return = $this->sanitize($this->$field, $filter);
+            $return = $this->sanitize($this->$field, $field);
         } else {
-            $this->$field = $this->sanitize($value, $filter);
+            $this->$field = $this->sanitize($value, $field);
         }
         return $return;
     }
