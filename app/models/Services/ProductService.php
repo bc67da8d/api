@@ -9,27 +9,25 @@
  */
 namespace Lackky\Models\Services;
 
-use Lackky\Constants\PostConstant;
 use Lackky\Constants\StatusConstant;
 use Lackky\Models\Posts;
+use Lackky\Models\Products;
 use Lackky\Models\Services\Exceptions\EntityNotFoundException;
-use Lackky\Models\Users;
 
 /**
- * Class PostService
+ * Class ProductService
  * @package Lackky\Models\Services
  */
-class PostService extends Service
+class ProductService extends Service
 {
-
     /**
      * @param $id
      *
-     * @return Posts|\Phalcon\Mvc\ModelInterface|null
+     * @return Products|null
      */
     public function findFirstById($id)
     {
-        $post = Posts::query()
+        $post = Products::query()
             ->where('id = :id:', ['id' => $id])
             ->limit(1)
             ->execute();
@@ -38,38 +36,36 @@ class PostService extends Service
     }
 
     /**
-     * Get UserService by ID.
-     *
      * @param  int $id The UserService ID.
-     * @return Users
+     * @return Products
      *
      * @throws Exceptions\EntityNotFoundException
      */
     public function getFirstById($id)
     {
-        if (!$user = $this->findFirstById($id)) {
+        if (!$product = $this->findFirstById($id)) {
             throw new EntityNotFoundException($id, 'userId');
         }
-        return $user;
+        return $product;
     }
 
     /**
      * @param $data
      *
-     * @return Posts|bool
+     * @return Products|bool
      */
     public function create($data)
     {
-        $post = new Posts();
-        $post->setUserId($this->auth->getUserId());
-        $post->setStatus(PostConstant::STATUS['public']);
-        $post->setCreatedAt(time());
-        $post->assign($data);
-        if (!$post->save()) {
-            $this->logger->error($post->getMessages()[0]->getMessage());
+        $product = new Products();
+        $product->setUserId($this->auth->getUserId());
+        $product->setStatus(StatusConstant::STATUS_1);
+        $product->setCreatedAt(time());
+        $product->assign($data);
+        if (!$product->save()) {
+            $this->logger->error($product->getMessages()[0]->getMessage());
             return false;
         }
-        return $post;
+        return $product;
     }
 
     /**
@@ -82,14 +78,14 @@ class PostService extends Service
         if (!isset($data['id'])) {
             return false;
         }
-        $post = $this->findFirstById($data['id']);
-        $post->setUpdatedAt(time());
-        $post->assign($data);
-        if (!$post->save()) {
-            $this->logger->error($post->getMessages()[0]->getMessage());
+        $product = $this->findFirstById($data['id']);
+        $product->setUpdatedAt(time());
+        $product->assign($data);
+        if (!$product->save()) {
+            $this->logger->error($product->getMessages()[0]->getMessage());
             return false;
         }
-        return $post;
+        return $product;
     }
 
     /**
@@ -111,7 +107,7 @@ class PostService extends Service
 
     public function getPaginatorPosts($params)
     {
-        $params['where'] = ['a.status' => PostConstant::STATUS['public']];
+        $params['where'] = ['a.status' => StatusConstant::STATUS_1];
         $params['orderBy'] = 'a.id DESC';
         return $this->getPaginator(Posts::class, $params);
     }

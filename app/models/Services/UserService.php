@@ -10,14 +10,16 @@
 namespace Lackky\Models\Services;
 
 use Firebase\JWT\JWT;
+use Lackky\Auth\Auth;
 use Lackky\Constants\StatusConstant;
+use Lackky\Constants\UserConstant;
 use Lackky\Models\Services\Exceptions\EntityNotFoundException;
 use Lackky\Models\Users;
 use Lackky\Constants\RoleConstant;
 
 /**
  * Class UserService
- *
+ * @property Auth $auth
  * @package App\Models\Services
  */
 class UserService extends Service
@@ -234,7 +236,6 @@ class UserService extends Service
      */
     public function isAdmin()
     {
-        return in_array(RoleConstant::ADMINS_SYSTEM_ROLE, $this->getRoleNamesForCurrentViewer());
     }
     /**
      * Checks whether the UserService is moderator.
@@ -251,13 +252,7 @@ class UserService extends Service
      */
     public function getRoleNamesForCurrentViewer()
     {
-        $entity = $this->getCurrentViewer();
-        if ($entity->getId() == 0 || $entity->countRoles() == 0) {
-            return [RoleConstant::ANONYMOUS_SYSTEM_ROLE];
-        }
-        //@TODO remove array if the feature use multiple role for a user
-        //return array_column($entity->getRoles(['columns' => ['name']])->toArray(), 'name');
-        return array_column([$entity->getRoles(['columns' => ['name']])->toArray()], 'name');
+
     }
     /**
      * Gets current viewer.
@@ -297,8 +292,8 @@ class UserService extends Service
             $data['gender'] = 'male';
         }
         $user = new Users();
-        $user->setRoleId(RoleConstant::USER_ROLE_ID);
-        $user->setStatus(StatusConstant::STATUS_1);
+        $user->setRoleId(RoleConstant::ROLE['member']);
+        $user->setStatus(UserConstant::STATUS['active']);
         $user->setCreatedAt(time());
         $user->assign($data);
         if (!$user->save()) {

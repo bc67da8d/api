@@ -48,8 +48,8 @@ class Products extends AbstractMigration
             ->addColumn('categories', 'string', ['limit' => 100])
             ->addColumn('tags', 'string', ['limit' => 100])
             ->addColumn('images', 'string', ['limit' => 100])
-            ->addColumn('stock_status', 'enum', ['values' => ['instock', 'outofstock', 'onbackorder']])
-            ->addColumn('status', 'enum', ['values' => ['0', '1', '2']])
+            ->addColumn('stock_status', 'boolean', ['null' => false, 'signed' => false])
+            ->addColumn('status', 'boolean', ['null' => false, 'signed' => false])
             ->addColumn('created_at', 'integer')
             ->addColumn('updated_at', 'integer', ['null' => true])
             ->create();

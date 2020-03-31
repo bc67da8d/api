@@ -1,7 +1,7 @@
 <?php
 
 use Phinx\Migration\AbstractMigration;
-
+use Phinx\Db\Adapter\MysqlAdapter;
 class Orders extends AbstractMigration
 {
     /**
@@ -41,10 +41,7 @@ class Orders extends AbstractMigration
             ->addColumn('line_items', 'string', ['limit' => 200])
             ->addColumn('currency', 'string', ['limit' => 5])
             ->addColumn('images', 'string', ['limit' => 100])
-            ->addColumn('status', 'enum', ['values' => [
-                'pending', 'processing', 'on-hold','completed',
-                'cancelled', 'refunded', 'failed', 'trash']
-            ])
+            ->addColumn('status', 'boolean', ['null' => false, 'signed' => false])
             ->addColumn('created_at', 'integer')
             ->addColumn('updated_at', 'integer', ['null' => true])
             ->create();
