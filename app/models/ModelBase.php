@@ -108,7 +108,6 @@ abstract class ModelBase extends Model
      * @param mixed  $value The value of the field
      *
      * @return ModelBase
-     * @throws ModelException
      */
     public function set($field, $value): ModelBase
     {
@@ -123,7 +122,6 @@ abstract class ModelBase extends Model
      * @param mixed  $value
      *
      * @return mixed
-     * @throws ModelException
      */
     private function getSetFields(string $type, string $field, $value = '')
     {

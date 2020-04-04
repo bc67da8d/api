@@ -18,9 +18,10 @@ namespace Lackky\Constants;
 class PostConstant
 {
     const STATUS = [
-        'pending' => 1,
-        'private' => 2,
-        'public'  => 3,
-        'delete'  => 4
+        'draft' => 1,
+        'pending' => 2,
+        'private' => 3,
+        'public'  => 4,
+        'delete'  => 5
     ];
 }

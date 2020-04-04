@@ -31,7 +31,7 @@ class OrderItems extends AbstractMigration
      */
     public function change()
     {
-// create the table
+        // create the table
         $table = $this->table('order_items');
         $table
             ->addColumn('order_id', 'integer', ['null' => true])

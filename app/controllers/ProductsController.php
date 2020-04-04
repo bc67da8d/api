@@ -51,8 +51,8 @@ class ProductsController extends ControllerBase
         if (!$post = $this->modelService->post->isMyPost($id)) {
             return $this->respondWithError(t('You have not permission to edit post'));
         }
-        $post->setStatus(ProductConstant::STATUS['delete']);
-        $post->setUpdatedAt(time());
+        $post->set('status', ProductConstant::STATUS['delete']);
+        $post->set('updatedAt', time());
         if (!$post->save()) {
             $this->respondWithError(t('Something wrong to delete post'));
         }
