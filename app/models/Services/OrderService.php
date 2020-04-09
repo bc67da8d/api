@@ -11,24 +11,25 @@ namespace Lackky\Models\Services;
 
 use Lackky\Constants\StatusConstant;
 use Lackky\Models\Carts;
+use Lackky\Models\Orders;
 use Lackky\Models\Posts;
 use Lackky\Models\Products;
 use Lackky\Models\Services\Exceptions\EntityNotFoundException;
 
 /**
- * Class CartService
+ * Class OrderService
  * @package Lackky\Models\Services
  */
-class CartService extends Service
+class OrderService extends Service
 {
     /**
      * @param $id
      *
-     * @return Carts|null
+     * @return Orders|null
      */
     public function findFirstById($id)
     {
-        $post = Carts::query()
+        $post = Orders::query()
             ->where('id = :id:', ['id' => $id])
             ->limit(1)
             ->execute();
@@ -39,7 +40,7 @@ class CartService extends Service
     /**
      * @param $id
      *
-     * @return Carts|null
+     * @return Orders|null
      * @throws EntityNotFoundException
      */
     public function getFirstById($id)
@@ -53,11 +54,11 @@ class CartService extends Service
     /**
      * @param $data
      *
-     * @return Carts|bool
+     * @return Orders|bool
      */
     public function create($data)
     {
-        $item = new Carts();
+        $item = new Orders();
         $item->set('userId', $this->auth->getUserId());
         $item->set('createdAt', time());
         $item->assign($data);
@@ -109,6 +110,6 @@ class CartService extends Service
     {
         //$params['where'] = ['a.status' => StatusConstant::STATUS_1];
         //$params['orderBy'] = 'a.id DESC';
-        return $this->getPaginator(Carts::class, $params);
+        return $this->getPaginator(Orders::class, $params);
     }
 }

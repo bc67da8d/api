@@ -41,6 +41,7 @@ class Orders extends AbstractMigration
             ->addColumn('line_items', 'string', ['limit' => 200])
             ->addColumn('currency', 'string', ['limit' => 5])
             ->addColumn('images', 'string', ['limit' => 100])
+            ->addColumn('customer_note', 'text', ['null' => true])
             ->addColumn('status', 'boolean', ['null' => false, 'signed' => false])
             ->addColumn('created_at', 'integer')
             ->addColumn('updated_at', 'integer', ['null' => true])

@@ -9,8 +9,7 @@
  */
 namespace Lackky\Controllers;
 
-use App\Transformers\CartsTransformer;
-use Lackky\Transformers\ProductsTransformer;
+use Lackky\Transformers\CartsTransformer;
 use Lackky\Validation\CartValidation;
 
 /**
@@ -36,7 +35,7 @@ class CartsController extends ControllerBase
     public function updateAction($id)
     {
         $data = $this->parserDataRequest();
-        if (!$this->modelService->cart->isMyPost($id)) {
+        if (!$this->modelService->cart->isOwner($id)) {
             return $this->respondWithError(t('You have not permission to edit post'));
         }
         $data['id'] = $id;
@@ -59,7 +58,7 @@ class CartsController extends ControllerBase
     public function indexAction()
     {
         $params = $this->getParameter();
-        $product = $this->modelService->post->getPaginatorPosts($params);
-        return $this->respondWithPagination($product, new ProductsTransformer());
+        $cart = $this->modelService->cart->paginator($params);
+        return $this->respondWithPagination($cart, new CartsTransformer());
     }
 }

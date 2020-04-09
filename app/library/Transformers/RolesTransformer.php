@@ -1,5 +1,5 @@
 <?php
-namespace App\Transformers;
+namespace Lackky\Transformers;
 
 /**
  * Class RolesTransformer

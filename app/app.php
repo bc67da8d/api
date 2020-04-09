@@ -50,10 +50,10 @@ $post->delete('/{id:[0-9]+}', 'deleteAction');
 $app->mount($post);
 
 $cart = new MicroCollection();
-$cart->setHandler(new Lackky\Controllers\PostsController());
-$cart->setPrefix('/posts');
+$cart->setHandler(new Lackky\Controllers\CartsController());
+$cart->setPrefix('/carts');
 $cart->get('/', 'indexAction');
-$cart>post('/', 'createAction');
+$cart->post('/', 'createAction');
 $cart->put('/{id:[0-9]+}', 'updateAction');
 $cart->delete('/{id:[0-9]+}', 'deleteAction');
 $app->mount($cart);

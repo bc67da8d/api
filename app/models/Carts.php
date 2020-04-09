@@ -135,7 +135,7 @@ class Carts extends ModelBase
      */
     public function initialize()
     {
-        $this->setSource("order_items");
+        $this->setSource("carts");
     }
 
     /**
@@ -162,6 +162,9 @@ class Carts extends ModelBase
      */
     public function getModelFilters(): array
     {
-        // TODO: Implement getModelFilters() method.
+        return [
+            'productId' => Filter::FILTER_INT,
+            'quantity' => Filter::FILTER_INT,
+        ];
     }
 }

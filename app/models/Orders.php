@@ -83,7 +83,18 @@ class Orders extends ModelBase
      * @var integer
      */
     protected $updatedAt;
+    /**
+     * @var string|null
+     */
+    protected $customerNote;
 
+    /**
+     * @return string|null
+     */
+    public function getCustomerNote(): ?string
+    {
+        return $this->customerNote;
+    }
 
     /**
      * Returns the value of field id
@@ -195,6 +206,8 @@ class Orders extends ModelBase
         return $this->updatedAt;
     }
 
+
+
     /**
      * Initialize method for model.
      */
@@ -221,6 +234,7 @@ class Orders extends ModelBase
             'currency' => 'currency',
             'images' => 'images',
             'status' => 'status',
+            'customer_note' => 'customerNote',
             'created_at' => 'createdAt',
             'updated_at' => 'updatedAt'
         ];
