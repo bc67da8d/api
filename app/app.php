@@ -24,7 +24,7 @@ $user->setHandler(new Lackky\Controllers\UsersController());
 $user->setPrefix('/users');
 $user->get('/', 'indexAction');
 $user->post('/', 'createAction');
-$user->put('/{id}', 'updateAction');
+$user->put('/', 'updateAction');
 $user->post('/avatar', 'avatarAction');
 $user->get('/me', 'meAction');
 $user->put('/password', 'passwordAction');
@@ -45,9 +45,27 @@ $post->setHandler(new Lackky\Controllers\PostsController());
 $post->setPrefix('/posts');
 $post->get('/', 'indexAction');
 $post->post('/', 'createAction');
-$post->put('/{id}', 'updateAction');
-$post->delete('/{id}', 'deleteAction');
+$post->put('/{id:[0-9]+}', 'updateAction');
+$post->delete('/{id:[0-9]+}', 'deleteAction');
 $app->mount($post);
+
+$cart = new MicroCollection();
+$cart->setHandler(new Lackky\Controllers\CartsController());
+$cart->setPrefix('/carts');
+$cart->get('/', 'indexAction');
+$cart->post('/', 'createAction');
+$cart->put('/{id:[0-9]+}', 'updateAction');
+$cart->delete('/{id:[0-9]+}', 'deleteAction');
+$app->mount($cart);
+
+$product = new MicroCollection();
+$product->setHandler(new Lackky\Controllers\ProductsController());
+$product->setPrefix('/products');
+$product->get('/', 'indexAction');
+$product->post('/', 'createAction');
+$product->put('/{id:[0-9]+}', 'updateAction');
+$product->delete('/{id:[0-9]+}', 'deleteAction');
+$app->mount($product);
 
 $upload = new MicroCollection();
 $upload->setHandler(new Lackky\Controllers\UploadsController());

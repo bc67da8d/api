@@ -1,8 +1,8 @@
 <?php
 
 use Phinx\Migration\AbstractMigration;
-
-class Posts extends AbstractMigration
+use Phinx\Db\Adapter\MysqlAdapter;
+class Orders extends AbstractMigration
 {
     /**
      * Change Method.
@@ -31,16 +31,17 @@ class Posts extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('posts');
+        // create the table
+        $table = $this->table('orders');
         $table
             ->addColumn('user_id', 'integer')
-            ->addColumn('title', 'string', ['limit' => 200])
-            ->addColumn('description', 'text', ['null' => true])
-            ->addColumn('image', 'string', ['limit' => 200, 'null' => true])
-            ->addColumn('video', 'string', ['limit' => 200, 'null' => true])
-            ->addColumn('hash_tag', 'string', ['limit' => 200, 'null' => true])
-            ->addColumn('number_view', 'integer', ['null' => true])
-            ->addColumn('number_reply', 'integer', ['null' => true])
+            ->addColumn('name', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('sale_price', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('sku', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('line_items', 'string', ['limit' => 200])
+            ->addColumn('currency', 'string', ['limit' => 5])
+            ->addColumn('images', 'string', ['limit' => 100])
+            ->addColumn('customer_note', 'text', ['null' => true])
             ->addColumn('status', 'boolean', ['null' => false, 'signed' => false])
             ->addColumn('created_at', 'integer')
             ->addColumn('updated_at', 'integer', ['null' => true])

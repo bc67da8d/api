@@ -8,6 +8,9 @@ namespace Lackky\Constants;
  */
 class UserConstant
 {
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
+    const STATUS = [
+        'inactive' => 1,
+        'active' => 2,
+        'delete'  => 3
+    ];
 }

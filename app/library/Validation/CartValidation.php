@@ -11,27 +11,21 @@ namespace Lackky\Validation;
 
 use Phalcon\Validation\Validator\PresenceOf;
 
-class PostValidation extends BaseValidation
+class CartValidation extends BaseValidation
 {
     public function initialize()
     {
 
         $this->add(
-            'name',
+            'quantity',
             new PresenceOf([
-                'message' => t('The name type is required'),
+                'message' => t('The quantity type is required'),
             ])
         );
         $this->add(
-            'price',
+            'productId',
             new PresenceOf([
-                'message' => t('The price type is required'),
-            ])
-        );
-        $this->add(
-            'image',
-            new PresenceOf([
-                'message' => t('The image type is required'),
+                'message' => t('The product id type is required'),
             ])
         );
 

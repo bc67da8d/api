@@ -42,8 +42,9 @@ class Users extends AbstractMigration
             ->addColumn('password_forgot_hash', 'string', ['limit' => 100, 'null' => true])
             ->addColumn('gender', 'enum', ['values' => ['male', 'female', 'unknown']])
             ->addColumn('birthday', 'integer', ['limit' => 11, 'null' => true])
+            ->addColumn('bio', 'text', ['null' => true])
             ->addColumn('avatar', 'integer', ['limit' => 11, 'null' => true])
-            ->addColumn('status', 'enum', ['values' => ['0', '1', '2']])
+            ->addColumn('status', 'boolean', ['null' => false, 'signed' => false])
             ->addColumn('created_at', 'integer')
             ->addColumn('updated_at', 'integer', ['null' => true])
             ->create();

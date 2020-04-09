@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class Posts extends AbstractMigration
+class OrderItems extends AbstractMigration
 {
     /**
      * Change Method.
@@ -31,17 +31,13 @@ class Posts extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('posts');
+        // create the table
+        $table = $this->table('carts');
         $table
+            ->addColumn('order_id', 'integer', ['null' => true])
+            ->addColumn('product_id', 'integer')
+            ->addColumn('quantity', 'integer')
             ->addColumn('user_id', 'integer')
-            ->addColumn('title', 'string', ['limit' => 200])
-            ->addColumn('description', 'text', ['null' => true])
-            ->addColumn('image', 'string', ['limit' => 200, 'null' => true])
-            ->addColumn('video', 'string', ['limit' => 200, 'null' => true])
-            ->addColumn('hash_tag', 'string', ['limit' => 200, 'null' => true])
-            ->addColumn('number_view', 'integer', ['null' => true])
-            ->addColumn('number_reply', 'integer', ['null' => true])
-            ->addColumn('status', 'boolean', ['null' => false, 'signed' => false])
             ->addColumn('created_at', 'integer')
             ->addColumn('updated_at', 'integer', ['null' => true])
             ->create();

@@ -97,175 +97,10 @@ class Users extends ModelBase
      * @var integer
      */
     protected $updatedAt;
-
     /**
-     * Method to set the value of field id
-     *
-     * @param integer $id
-     * @return $this
+     * @var string
      */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field role_id
-     *
-     * @param integer $roleId
-     * @return $this
-     */
-    public function setRoleId($roleId)
-    {
-        $this->roleId = $roleId;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field name
-     *
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field email
-     *
-     * @param string $email
-     * @return $this
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field password
-     *
-     * @param string $password
-     * @return $this
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field register_hash
-     *
-     * @param string $registerHash
-     * @return $this
-     */
-    public function setRegisterHash($registerHash)
-    {
-        $this->registerHash = $registerHash;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field passwordForgotHash
-     *
-     * @param string $passwdForgotHash
-     * @return $this
-     */
-    public function setPasswordForgotHash($passwordForgotHash)
-    {
-        $this->passwordForgotHash = $passwordForgotHash;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field gender
-     *
-     * @param string $gender
-     * @return $this
-     */
-    public function setGender($gender)
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field avatar
-     *
-     * @param integer $avatar
-     * @return $this
-     */
-    public function setAvatar($avatar)
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field birthday
-     *
-     * @param integer $birthday
-     * @return $this
-     */
-    public function setBirthday($birthday)
-    {
-        $this->birthday = $birthday;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field status
-     *
-     * @param string $status
-     * @return $this
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field created_at
-     *
-     * @param integer $createdAt
-     * @return $this
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field updated_at
-     *
-     * @param integer $updatedAt
-     * @return $this
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
+    protected $bio;
 
     /**
      * Returns the value of field id
@@ -406,6 +241,21 @@ class Users extends ModelBase
         $this->setSource("users");
     }
 
+    /**
+     * @param string|null $bio
+     */
+    public function setBio(string $bio): void
+    {
+        $this->bio = $bio;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
 
     /**
      * Independent Column Mapping.
@@ -426,6 +276,7 @@ class Users extends ModelBase
             'gender' => 'gender',
             'avatar' => 'avatar',
             'birthday' => 'birthday',
+            'bio' => 'bio',
             'status' => 'status',
             'created_at' => 'createdAt',
             'updated_at' => 'updatedAt'
@@ -446,6 +297,7 @@ class Users extends ModelBase
             'gender' => Filter::FILTER_STRING,
             'avatar' => Filter::FILTER_STRING,
             'birthday' => Filter::FILTER_STRING,
+            'bio' => Filter::FILTER_STRING,
             'status' => Filter::FILTER_STRING,
             'createdAt' => Filter::FILTER_INT,
             'updatedAt' => Filter::FILTER_INT

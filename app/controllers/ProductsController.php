@@ -9,30 +9,29 @@
  */
 namespace Lackky\Controllers;
 
-use Lackky\Constants\PostConstant;
-use Lackky\Transformers\PostsTransformer;
-use Lackky\Validation\PostValidation;
+use Lackky\Constants\ProductConstant;
+use Lackky\Transformers\ProductsTransformer;
+use Lackky\Validation\ProductValidation;
 
 /**
- * Class PostsController
- *
+ * Class ProductsController
  * @package Lackky\Controllers
  */
-class PostsController extends ControllerBase
+class ProductsController extends ControllerBase
 {
 
     public function createAction()
     {
         $data = $this->parserDataRequest();
-        $validation = $this->validation(PostValidation::class, $data);
+        $validation = $this->validation(ProductValidation::class, $data);
         if ($validation) {
             return $this->respondWithError($validation);
         }
 
-        if (!$post = $this->modelService->post->create($data)) {
-            return $this->respondWithError('Add post fail');
+        if (!$product = $this->modelService->product->create($data)) {
+            return $this->respondWithError('Add product fail');
         }
-        return $this->respondWithItem($post, new PostsTransformer());
+        return $this->respondWithItem($product, new ProductsTransformer());
     }
     public function updateAction($id)
     {
@@ -41,19 +40,19 @@ class PostsController extends ControllerBase
             return $this->respondWithError(t('You have not permission to edit post'));
         }
         $data['id'] = $id;
-        if (!$post = $this->modelService->post->update($data)) {
+        if (!$product = $this->modelService->post->update($data)) {
             return $this->respondWithError(t('Update post fail'));
         }
         //Add indexer to elastic
-        return $this->respondWithItem($post, new PostsTransformer());
+        return $this->respondWithItem($product, new ProductsTransformer());
     }
     public function deleteAction($id)
     {
         if (!$post = $this->modelService->post->isMyPost($id)) {
             return $this->respondWithError(t('You have not permission to edit post'));
         }
-        $post->setStatus(PostConstant::STATUS['delete']);
-        $post->setUpdatedAt(time());
+        $post->set('status', ProductConstant::STATUS['delete']);
+        $post->set('updatedAt', time());
         if (!$post->save()) {
             $this->respondWithError(t('Something wrong to delete post'));
         }
@@ -62,7 +61,7 @@ class PostsController extends ControllerBase
     public function indexAction()
     {
         $params = $this->getParameter();
-        $posts = $this->modelService->post->getPaginatorPosts($params);
-        return $this->respondWithPagination($posts, new PostsTransformer());
+        $product = $this->modelService->post->getPaginatorPosts($params);
+        return $this->respondWithPagination($product, new ProductsTransformer());
     }
 }

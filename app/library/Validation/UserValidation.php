@@ -25,6 +25,12 @@ class UserValidation extends BaseValidation
             ])
         );
         $this->add(
+            'name',
+            new PresenceOf([
+                'message' => t('The name type is required'),
+            ])
+        );
+        $this->add(
             'password',
             new PresenceOf([
                 'message' => t('The password type is required'),

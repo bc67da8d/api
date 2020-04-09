@@ -16,6 +16,8 @@ use Phalcon\Exception;
  * @property UserService $user
  * @property PostService $post
  * @property MediaDataService $mediaData
+ * @property CartService $cart
+ * @property ProductService $product
  * @package Lackky\Models\Services
  */
 class ModelService

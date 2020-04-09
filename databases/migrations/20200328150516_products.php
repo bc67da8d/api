@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class Posts extends AbstractMigration
+class Products extends AbstractMigration
 {
     /**
      * Change Method.
@@ -31,16 +31,24 @@ class Posts extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('posts');
+        // create the table
+        $table = $this->table('products');
         $table
-            ->addColumn('user_id', 'integer')
-            ->addColumn('title', 'string', ['limit' => 200])
+            ->addColumn('name', 'string', ['limit' => 100])
+            ->addColumn('slug', 'string', ['limit' => 100])
+            ->addColumn('type', 'boolean', ['null' => false, 'signed' => false])
+            ->addColumn('featured', 'boolean', ['null' => true])
+            ->addColumn('price', 'string', ['limit' => 100])
+            ->addColumn('sale_price', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('sku', 'string', ['limit' => 100])
             ->addColumn('description', 'text', ['null' => true])
-            ->addColumn('image', 'string', ['limit' => 200, 'null' => true])
-            ->addColumn('video', 'string', ['limit' => 200, 'null' => true])
-            ->addColumn('hash_tag', 'string', ['limit' => 200, 'null' => true])
-            ->addColumn('number_view', 'integer', ['null' => true])
-            ->addColumn('number_reply', 'integer', ['null' => true])
+            ->addColumn('short_description', 'text', ['null' => true])
+            ->addColumn('on_sale', 'boolean', ['null' => true])
+            ->addColumn('weight', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('categories', 'string', ['limit' => 100])
+            ->addColumn('tags', 'string', ['limit' => 100])
+            ->addColumn('images', 'string', ['limit' => 100])
+            ->addColumn('stock_status', 'boolean', ['null' => false, 'signed' => false])
             ->addColumn('status', 'boolean', ['null' => false, 'signed' => false])
             ->addColumn('created_at', 'integer')
             ->addColumn('updated_at', 'integer', ['null' => true])
