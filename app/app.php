@@ -72,8 +72,16 @@ $upload->setHandler(new Lackky\Controllers\UploadsController());
 $upload->setPrefix('/uploads');
 $upload->get('/', 'indexAction');
 $upload->post('/', 'createAction');
-$upload->post('/{id}', 'updateAction');
+$upload->post('/{id:[0-9]+}', 'updateAction');
 $app->mount($upload);
+
+$order = new MicroCollection();
+$order->setHandler(new Lackky\Controllers\OrdersController());
+$order->setPrefix('/orders');
+$order->get('/', 'indexAction');
+$order->post('/', 'createAction');
+$order->post('/{id:[0-9]+}', 'updateAction');
+$app->mount($order);
 
 /**
  * Not found handler

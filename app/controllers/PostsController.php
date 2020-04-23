@@ -52,8 +52,8 @@ class PostsController extends ControllerBase
         if (!$post = $this->modelService->post->isMyPost($id)) {
             return $this->respondWithError(t('You have not permission to edit post'));
         }
-        $post->setStatus(PostConstant::STATUS['delete']);
-        $post->setUpdatedAt(time());
+        $post->set('status', PostConstant::STATUS['delete']);
+        $post->set('updatedAt', time());
         if (!$post->save()) {
             $this->respondWithError(t('Something wrong to delete post'));
         }

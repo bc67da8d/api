@@ -38,8 +38,15 @@ class Products extends AbstractMigration
             ->addColumn('slug', 'string', ['limit' => 100])
             ->addColumn('type', 'boolean', ['null' => false, 'signed' => false])
             ->addColumn('featured', 'boolean', ['null' => true])
-            ->addColumn('price', 'string', ['limit' => 100])
-            ->addColumn('sale_price', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('price', 'decimal', [
+                'precision'=>10,
+                'scale'=>2
+            ])
+            ->addColumn('sale_price', 'decimal', [
+                'precision'=>10,
+                'scale'=>2,
+                'null' => true
+            ])
             ->addColumn('sku', 'string', ['limit' => 100])
             ->addColumn('description', 'text', ['null' => true])
             ->addColumn('short_description', 'text', ['null' => true])

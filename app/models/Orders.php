@@ -37,22 +37,14 @@ class Orders extends ModelBase
     protected $name;
 
     /**
-     *
-     * @var string
+     * @var double
      */
-    protected $salePrice;
-
+    protected $price;
     /**
      *
      * @var string
      */
-    protected $sku;
-
-    /**
-     *
-     * @var string
-     */
-    protected $lineItems;
+    protected $items;
 
     /**
      *
@@ -60,11 +52,6 @@ class Orders extends ModelBase
      */
     protected $currency;
 
-    /**
-     *
-     * @var string
-     */
-    protected $images;
 
     /**
      *
@@ -94,6 +81,14 @@ class Orders extends ModelBase
     public function getCustomerNote(): ?string
     {
         return $this->customerNote;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice(): float
+    {
+        return $this->price;
     }
 
     /**
@@ -127,33 +122,13 @@ class Orders extends ModelBase
     }
 
     /**
-     * Returns the value of field salePrice
-     *
-     * @return string
-     */
-    public function getSalePrice()
-    {
-        return $this->salePrice;
-    }
-
-    /**
-     * Returns the value of field sku
-     *
-     * @return string
-     */
-    public function getSku()
-    {
-        return $this->sku;
-    }
-
-    /**
      * Returns the value of field lineItems
      *
      * @return string
      */
-    public function getLineItems()
+    public function getItems()
     {
-        return $this->lineItems;
+        return $this->items;
     }
 
     /**
@@ -164,16 +139,6 @@ class Orders extends ModelBase
     public function getCurrency()
     {
         return $this->currency;
-    }
-
-    /**
-     * Returns the value of field images
-     *
-     * @return string
-     */
-    public function getImages()
-    {
-        return $this->images;
     }
 
     /**
@@ -206,8 +171,6 @@ class Orders extends ModelBase
         return $this->updatedAt;
     }
 
-
-
     /**
      * Initialize method for model.
      */
@@ -228,11 +191,9 @@ class Orders extends ModelBase
             'id' => 'id',
             'user_id' => 'userId',
             'name' => 'name',
-            'sale_price' => 'salePrice',
-            'sku' => 'sku',
-            'line_items' => 'lineItems',
+            'items' => 'items',
+            'price' => 'price',
             'currency' => 'currency',
-            'images' => 'images',
             'status' => 'status',
             'customer_note' => 'customerNote',
             'created_at' => 'createdAt',

@@ -9,6 +9,7 @@
  */
 namespace Lackky\Models\Services;
 
+use Lackky\Constants\OrderConstant;
 use Lackky\Constants\StatusConstant;
 use Lackky\Models\Carts;
 use Lackky\Models\Orders;
@@ -58,21 +59,35 @@ class OrderService extends Service
      */
     public function create($data)
     {
-        $item = new Orders();
-        $item->set('userId', $this->auth->getUserId());
-        $item->set('createdAt', time());
-        $item->assign($data);
-        if (!$item->save()) {
-            $this->logger->error($item->getMessages()[0]->getMessage());
+        $items = $data['items'] ?? null;
+        if (!$items) {
             return false;
         }
-        return $item;
+        $data['name'] = $data['name'] ?? 'Order Date ' . date('Y-m-d');
+        $currency = $data['currency'] ?? 'VND';
+        $object = new Orders();
+        $object->assign($data);
+        $object->set('userId', $this->auth->getUserId());
+        $object->set('createdAt', time());
+        $object->set('price', $this->modelService->product->getPriceCart($items));
+        $object->set('currency', $currency);
+        $object->set('items',json_encode($items));
+        $object->set('status', OrderConstant::STATUS['pending']);
+        if (!$object->save()) {
+            $this->logger->error($object->getMessages()[0]->getMessage());
+            return false;
+        }
+        //Update record cart
+        $this->modelService->cart->updateOrderNull($object->getId());
+        return $object;
     }
+
+
 
     /**
      * @param $data
      *
-     * @return bool|Carts
+     * @return bool|Orders
      */
     public function update($data)
     {

@@ -14,6 +14,7 @@ use Lackky\Models\Carts;
 use Lackky\Models\Posts;
 use Lackky\Models\Products;
 use Lackky\Models\Services\Exceptions\EntityNotFoundException;
+use Phalcon\Mvc\Model\Query\Status;
 
 /**
  * Class CartService
@@ -110,5 +111,23 @@ class CartService extends Service
         //$params['where'] = ['a.status' => StatusConstant::STATUS_1];
         //$params['orderBy'] = 'a.id DESC';
         return $this->getPaginator(Carts::class, $params);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return bool
+     */
+    public function updateOrderNull($id)
+    {
+        /* @var Status $result*/
+        $result = $this->modelsManager->executeQuery(
+            'UPDATE  Lackky\Models\Carts SET orderId = :orderId:, updatedAt = :time: WHERE orderId IS NULL',
+            [
+                'orderId' => $id,
+                'time' => time()
+            ]
+        );
+        return $result->success();
     }
 }

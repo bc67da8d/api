@@ -189,7 +189,7 @@ class Products extends ModelBase
     /**
      * Returns the value of field price
      *
-     * @return string
+     * @return float
      */
     public function getPrice()
     {

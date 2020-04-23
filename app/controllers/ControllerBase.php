@@ -11,7 +11,6 @@ namespace Lackky\Controllers;
 
 use Lackky\Models\ModelBase;
 use Lackky\Models\Services\ModelService;
-use Lackky\Transformers\BaseTransformer;
 use League\Fractal\Pagination\PhalconFrameworkPaginatorAdapter;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;

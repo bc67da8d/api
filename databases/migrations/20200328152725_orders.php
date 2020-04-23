@@ -36,11 +36,13 @@ class Orders extends AbstractMigration
         $table
             ->addColumn('user_id', 'integer')
             ->addColumn('name', 'string', ['limit' => 100, 'null' => true])
-            ->addColumn('sale_price', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('price', 'decimal', [
+                'precision'=>10,
+                'scale'=>2
+            ])
             ->addColumn('sku', 'string', ['limit' => 100, 'null' => true])
-            ->addColumn('line_items', 'string', ['limit' => 200])
+            ->addColumn('items', 'string', ['limit' => 200])
             ->addColumn('currency', 'string', ['limit' => 5])
-            ->addColumn('images', 'string', ['limit' => 100])
             ->addColumn('customer_note', 'text', ['null' => true])
             ->addColumn('status', 'boolean', ['null' => false, 'signed' => false])
             ->addColumn('created_at', 'integer')

@@ -12,7 +12,7 @@ use Phalcon\Di\Injectable;
  * @property \Phalcon\Config $config
  * @property \Phalcon\Security\Random $random
  * @property \Phalcon\Logger $logger
- *
+ * @property ModelService $modelService
  * @package Lackky\Models\Services
  */
 abstract class Service extends Injectable

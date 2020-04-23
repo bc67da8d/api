@@ -1,5 +1,5 @@
-# Order
-The Carts API allows you to create, view, update, and delete individual, or a batch, of carts.
+# Orders
+The Orders API allows you to create, view, update, and delete individual, or a batch, of orders.
 
 - Endpoint: export HOST=https://api.dev.lackky.com
 - Content-Type: application/json
@@ -48,12 +48,36 @@ This api helps you to create a new order items.
 
 |Property Name        | Type           | Description  | Default|Required|
 |:--------------|:---------|:------:|----|----|
-|productId | int  |Product id  |n/a| yes|
-|quantity | int  |Order quantity |n/a| yes|
+|items | array  |Items data. See Order -  Items properties |n/a| yes|
+|name | string  |The name order |n/a| no|
+|shippingAddress | string  |The shipping address |n/a| no|
 
+Order - Items properties
+|Attribute|Type|Description|
+|:-----|:-----|:------|
+|productId | int  |Product id  |
+|quantity | int  |Order quantity |
 
-To get lineItems, you need to call the endpoint `GET ${HOST}/carts` it will be 
+To get items, you need to call the endpoint `GET ${HOST}/carts` it will be 
 return 
+
+``` 
+{
+	"name: "Order 01",
+    "items": [
+		{
+			"productId" : 1,
+			"quantity": 2
+		},
+		{
+			"productId" : 2,
+			"quantity": 1
+		}
+	],
+    "customerNote" : "Doi dien KTX DHQG HCM",
+    "shippingAddress" : ""
+}
+```
 ### Artwork Category table
 
 |Value|Description|

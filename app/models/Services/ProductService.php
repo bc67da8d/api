@@ -111,4 +111,13 @@ class ProductService extends Service
         $params['orderBy'] = 'a.id DESC';
         return $this->getPaginator(Posts::class, $params);
     }
+    public function getPriceCart($items)
+    {
+        $price = 0;
+        foreach ($items as $item) {
+            $product = $this->getFirstById($item['productId']);
+            $price +=  $product->getPrice();
+        }
+        return $price;
+    }
 }
