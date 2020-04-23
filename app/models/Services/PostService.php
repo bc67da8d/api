@@ -61,10 +61,10 @@ class PostService extends Service
     public function create($data)
     {
         $post = new Posts();
-        $post->setUserId($this->auth->getUserId());
-        $post->setStatus(PostConstant::STATUS['public']);
-        $post->setCreatedAt(time());
         $post->assign($data);
+        $post->set('userId', $this->auth->getUserId());
+        $post->set('status', PostConstant::STATUS['public']);
+        $post->set('createdAt', time());
         if (!$post->save()) {
             $this->logger->error($post->getMessages()[0]->getMessage());
             return false;

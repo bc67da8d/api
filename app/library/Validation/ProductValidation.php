@@ -17,9 +17,21 @@ class ProductValidation extends BaseValidation
     {
 
         $this->add(
-            'title',
+            'name',
             new PresenceOf([
-                'message' => t('The title type is required'),
+                'message' => t('The name type is required'),
+            ])
+        );
+        $this->add(
+            'price',
+            new PresenceOf([
+                'message' => t('The price type is required'),
+            ])
+        );
+        $this->add(
+            'image',
+            new PresenceOf([
+                'message' => t('The image type is required'),
             ])
         );
 

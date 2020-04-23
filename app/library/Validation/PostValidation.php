@@ -17,23 +17,10 @@ class PostValidation extends BaseValidation
     {
 
         $this->add(
-            'name',
+            'title',
             new PresenceOf([
-                'message' => t('The name type is required'),
+                'message' => t('The title is required'),
             ])
         );
-        $this->add(
-            'price',
-            new PresenceOf([
-                'message' => t('The price type is required'),
-            ])
-        );
-        $this->add(
-            'image',
-            new PresenceOf([
-                'message' => t('The image type is required'),
-            ])
-        );
-
     }
 }

@@ -1,11 +1,11 @@
 # Feeds
 
-- Endpoint: export HOST=https://api.dev.frm.fm
+- Endpoint: export HOST=https://api.dev.lackky.com
 - Content-Type: application/json
 
 ## Get All Feeds
 
-This endpoint retrieves all artworks. The results returned are paginated.
+This endpoint retrieves all feeds. The results returned are paginated.
 
 Method: GET
 
@@ -452,8 +452,12 @@ Sample response
 
 |Property Name        | Type           | Description  | Default|Required|
 |:--------------|:---------|:------:|----|----|
-|url | string|The source you want to add new feed |n/a| yes|
-|tags| string|The tags name for this feed|n/a|no|
+|title | string|The title you want to add new feed |n/a| yes|
+|hasTags| string|The tags name for this feed|n/a|no|
+|image | int  |List of images |n/a| no|
+|video | int  |List of video |n/a| no|
+|description| string|The tags name for this feed|n/a|no|
+
 |private|int|Option for public or private that feed, default is public|0|no|
 
 For example create a new feed:
