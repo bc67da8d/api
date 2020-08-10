@@ -15,11 +15,13 @@ services:
     depends_on:
       - db
       - redis
-    image: gsviec/phalcon:v4
+    #image: gsviec/phalcon:v4
+    image: gsviec/nginx-php:7.4
     ports:
-      - "80:80"
+      - "80:8080"
     volumes:
-      - ./:/app
+      - ./:/var/www
+      - ./docker-nginx-site.conf:/etc/nginx/nginx.conf
     environment:
       PHP_DISPLAY_ERRORS: 'On'
   phpmyadmin:
@@ -59,4 +61,4 @@ services:
 #      - 5601:5601
 volumes:
   db_data:
-  esdata:
+  #esdata:
